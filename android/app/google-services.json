@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "541033925324",
+    "project_id": "gadoapp-c0f5a",
+    "storage_bucket": "gadoapp-c0f5a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:541033925324:android:7e38e92bcb54b51d231069",
+        "android_client_info": {
+          "package_name": "br.com.iotasoftware.gadoapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaQFyzFFBJBDLONvM3EnVtUM6PvFc9km4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

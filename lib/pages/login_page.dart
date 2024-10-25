@@ -1,91 +1,73 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  static const String routeName = '/login';
   const LoginPage({super.key});
 
   @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  String _errMsg = '';
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.all(27),
-        decoration: const BoxDecoration(
-          
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 30),
-            const Text(
-              "Digite os dados de acesso nos campos abaixo.",
-              style: TextStyle(
-                color: Colors.black87,
-              ),
-            ),
-            const SizedBox(height: 30),
-            const CupertinoTextField(
-              cursorColor: Colors.black87,
-              padding: EdgeInsets.all(15),
-              placeholder: "Digite o seu e-mail",
-              placeholderStyle: TextStyle(color: Colors.black45, fontSize: 14),
-              style: TextStyle(color: Colors.black87, fontSize: 14),
-              decoration: BoxDecoration(
-                  color: Colors.black12,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(7),
-                  )),
-            ),
-            const SizedBox(height: 5),
-            const CupertinoTextField(
-              padding: EdgeInsets.all(15),
-              cursorColor: Colors.black87,
-              placeholder: "Digite sua senha",
-              obscureText: true,
-              placeholderStyle: TextStyle(color: Colors.black45, fontSize: 14),
-              style: TextStyle(color: Colors.black87, fontSize: 14),
-              decoration: BoxDecoration(
-                  color: Colors.black12,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(7),
-                  )),
-            ),
-            const SizedBox(height: 30),
-            SizedBox(
-              width: double.infinity,
-              child: CupertinoButton(
-                padding: const EdgeInsets.all(17),
-                color: Colors.blueAccent,
-                child: const Text(
-                  "Acessar",
-                  style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600),
+      body: Center(
+        child: Form(
+          child: ListView(
+            padding: const EdgeInsets.all(24.0),
+            shrinkWrap: true,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: TextFormField(
+                  keyboardType: TextInputType.emailAddress,
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    prefixIcon: Icon(Icons.email),
+                    labelText: 'Email',
+                  ),
+                  validator: (value) {
+                    if(value == null || value.isEmpty) {
+                      return 'Insida um email válido';
+                    }
+                    return null;
+                  },
                 ),
-                onPressed: () {},
               ),
-            ),
-            const SizedBox(height: 7),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black87, width: 0.8),
-                  borderRadius: BorderRadius.circular(7)),
-              child: CupertinoButton(
-                child: const Text(
-                  "Crie sua conta",
-                  style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600),
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: TextFormField(
+                  controller: _passwordController,
+                  decoration: const InputDecoration(
+                    filled: true,
+                    prefixIcon: Icon(Icons.password),
+                    labelText: 'Senha',
+                  ),
+                  validator: (value) {
+                    if(value == null || value.isEmpty) {
+                      return 'Insida uma senha válida';
+                    }
+                    return null;
+                  },
                 ),
-                onPressed: () {},
-              ),
-            ),
-          ],
+              )
+            ],
+          )
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }
