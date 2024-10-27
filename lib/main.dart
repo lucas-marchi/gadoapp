@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:gadoapp/auth/auth_service.dart';
 import 'package:gadoapp/pages/dashboard_page.dart';
 import 'package:go_router/go_router.dart';
 import 'firebase_options.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'gadoapp',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey.shade900),
         useMaterial3: true,
       ),
       routerConfig: _router,
@@ -33,6 +34,13 @@ class MyApp extends StatelessWidget {
   }
 
   final _router = GoRouter(
+    initialLocation: DashboardPage.routeName,
+    redirect: (context, state) {
+      if(AuthService.currentUser == null) {
+        return LoginPage.routeName;
+      }
+      return null;
+    },
     routes: [
       GoRoute(
         name: DashboardPage.routeName,

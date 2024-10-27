@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Center(
         child: Form(
+          key: _formKey,
           child: ListView(
             padding: const EdgeInsets.all(24.0),
             shrinkWrap: true,
@@ -43,11 +44,12 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: TextFormField(
+                  obscureText: true,
                   controller: _passwordController,
                   decoration: const InputDecoration(
                     filled: true,
                     prefixIcon: Icon(Icons.password),
-                    labelText: 'Senha',
+                    labelText: 'Senha (no mínimo 6 caracteres)',
                   ),
                   validator: (value) {
                     if(value == null || value.isEmpty) {
@@ -56,7 +58,12 @@ class _LoginPageState extends State<LoginPage> {
                     return null;
                   },
                 ),
-              )
+              ),
+              ElevatedButton(
+                onPressed: _authenticate,
+                child: const Text('Entrar como administrador'),
+              ),
+              Text(_errMsg, style: const TextStyle(fontSize: 18, color: Colors.red),),
             ],
           )
         ),
@@ -69,5 +76,8 @@ class _LoginPageState extends State<LoginPage> {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void _authenticate() async {
   }
 }
