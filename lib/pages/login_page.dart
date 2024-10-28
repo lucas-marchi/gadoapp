@@ -1,4 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:gadoapp/auth/auth_service.dart';
+import 'package:gadoapp/main.dart';
+import 'package:gadoapp/pages/dashboard_page.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
   static const String routeName = '/login';
@@ -79,5 +85,27 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _authenticate() async {
+    if(_formKey.currentState!.validate()) {
+      EasyLoading.show(status: 'Aguarde...');
+      final email = _emailController.text;
+      final pass = _passwordController.text;
+      try {
+        final status = await AuthService.loginAdmin(email, pass);
+        EasyLoading.dismiss();
+        if(status) {
+          context.goNamed(DashboardPage.routeName);
+        } else {
+          await AuthService.logout();
+          setState(() {
+            _errMsg = 'Este usuário não é um Administrador';
+          });
+        }
+      } on FirebaseAuthException catch(error) {
+        EasyLoading.dismiss();
+        setState(() {
+          _errMsg = error.message!;
+        });
+      }
+    }
   }
 }
