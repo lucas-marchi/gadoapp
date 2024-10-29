@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gadoapp/auth/auth_service.dart';
+import 'package:gadoapp/pages/add_bovine_page.dart';
 import 'package:gadoapp/pages/dashboard_page.dart';
+import 'package:gadoapp/pages/view_bovine_page.dart';
 import 'package:go_router/go_router.dart';
 import 'firebase_options.dart';
 import 'package:gadoapp/pages/login_page.dart';
@@ -47,7 +49,19 @@ class MyApp extends StatelessWidget {
       GoRoute(
         name: DashboardPage.routeName,
         path: DashboardPage.routeName,
-        builder: (context, state) => const DashboardPage()
+        builder: (context, state) => const DashboardPage(),
+        routes: [
+          GoRoute(
+            name: AddBovinePage.routeName,
+            path: AddBovinePage.routeName,
+            builder: (context, state) => const AddBovinePage()
+          ),
+          GoRoute(
+            name: ViewBovinePage.routeName,
+            path: ViewBovinePage.routeName,
+            builder: (context, state) => const ViewBovinePage()
+          )
+        ],
       ),
       GoRoute(
         name: LoginPage.routeName,
