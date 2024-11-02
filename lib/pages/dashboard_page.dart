@@ -4,7 +4,9 @@ import 'package:gadoapp/customwidgets/dashboard_item_view.dart';
 import 'package:gadoapp/main.dart';
 import 'package:gadoapp/models/dashboard_model.dart';
 import 'package:gadoapp/pages/login_page.dart';
+import 'package:gadoapp/providers/bovine_provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class DashboardPage extends StatefulWidget {
   static const String routeName = '/';
@@ -15,6 +17,11 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  @override
+  void didChangeDependencies() {
+    Provider.of<BovineProvider>(context, listen: false).getAllRaces();
+    super.didChangeDependencies();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

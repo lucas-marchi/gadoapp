@@ -6,7 +6,9 @@ import 'package:gadoapp/pages/add_bovine_page.dart';
 import 'package:gadoapp/pages/dashboard_page.dart';
 import 'package:gadoapp/pages/race_page.dart';
 import 'package:gadoapp/pages/view_bovine_page.dart';
+import 'package:gadoapp/providers/bovine_provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:gadoapp/pages/login_page.dart';
 
@@ -17,7 +19,11 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
 
   );
-  runApp(MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => BovineProvider()),
+    ],
+    child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
