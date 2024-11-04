@@ -19,7 +19,7 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   @override
   void didChangeDependencies() {
-    Provider.of<BovineProvider>(context, listen: false).getAllRaces();
+    Provider.of<BovineProvider>(context, listen: false).getAllHerds();
     super.didChangeDependencies();
   }
   @override

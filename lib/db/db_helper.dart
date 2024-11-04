@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gadoapp/models/races.dart';
+import 'package:gadoapp/models/herds.dart';
 
 class DbHelper {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -10,12 +10,12 @@ class DbHelper {
     return snapshot.exists;
   }
 
-  static Future<void> addRace(Race race) {
-    final doc = _db.collection(collectionRace).doc();
-    race.id = doc.id;
-    return doc.set(race.toMap());
+  static Future<void> addHerd(Herd herd) {
+    final doc = _db.collection(collectionHerd).doc();
+    herd.id = doc.id;
+    return doc.set(herd.toMap());
   }
 
-  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllRaces() => 
-    _db.collection(collectionRace).snapshots();
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllHerds() => 
+    _db.collection(collectionHerd).snapshots();
 }

@@ -4,7 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gadoapp/auth/auth_service.dart';
 import 'package:gadoapp/pages/add_bovine_page.dart';
 import 'package:gadoapp/pages/dashboard_page.dart';
-import 'package:gadoapp/pages/race_page.dart';
+import 'package:gadoapp/pages/herd_page.dart';
 import 'package:gadoapp/pages/view_bovine_page.dart';
 import 'package:gadoapp/providers/bovine_provider.dart';
 import 'package:go_router/go_router.dart';
@@ -69,9 +69,9 @@ class MyApp extends StatelessWidget {
             builder: (context, state) => const ViewBovinePage()
           ),
           GoRoute(
-            name: RacePage.routeName,
-            path: RacePage.routeName,
-            builder: (context, state) => const RacePage()
+            name: HerdPage.routeName,
+            path: HerdPage.routeName,
+            builder: (context, state) => const HerdPage()
           ),
         ],
       ),

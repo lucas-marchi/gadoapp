@@ -1,18 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:gadoapp/db/db_helper.dart';
-import 'package:gadoapp/models/races.dart';
+import 'package:gadoapp/models/herds.dart';
 
 class BovineProvider with ChangeNotifier{
-  List<Race> raceList = [];
+  List<Herd> herdList = [];
 
-  Future<void> addRace(String name) {
-    final race = Race(name: name);
-    return DbHelper.addRace(race);
+  Future<void> addHerd(String name) {
+    final herd = Herd(name: name);
+    return DbHelper.addHerd(herd);
   }
 
-  getAllRaces() {
-    DbHelper.getAllRaces().listen((snapshot) {
-      raceList = List.generate(snapshot.docs.length, (index) => Race.fromMap(snapshot.docs[index].data()));
+  getAllHerds() {
+    DbHelper.getAllHerds().listen((snapshot) {
+      herdList = List.generate(snapshot.docs.length, (index) => Herd.fromMap(snapshot.docs[index].data()));
       notifyListeners();
     });
   }
