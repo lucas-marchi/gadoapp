@@ -13,7 +13,7 @@ class DbHelper {
   static Future<void> addHerd(Herd herd) {
     final doc = _db.collection(collectionHerd).doc();
     herd.id = doc.id;
-    return doc.set(herd.toMap());
+    return doc.set(herd.toJson());
   }
 
   static Stream<QuerySnapshot<Map<String, dynamic>>> getAllHerds() => 

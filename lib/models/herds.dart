@@ -11,14 +11,14 @@ class Herd {
     required this.name,
   });
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       herdFieldId: id, 
       herdFieldName: name
     };
   }
 
-  factory Herd.fromMap(Map<String, dynamic> map) =>
+  factory Herd.fromJson(Map<String, dynamic> map) =>
     Herd(
       id: map[herdFieldId], 
       name: map[herdFieldName]

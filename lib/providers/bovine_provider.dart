@@ -12,7 +12,7 @@ class BovineProvider with ChangeNotifier{
 
   getAllHerds() {
     DbHelper.getAllHerds().listen((snapshot) {
-      herdList = List.generate(snapshot.docs.length, (index) => Herd.fromMap(snapshot.docs[index].data()));
+      herdList = List.generate(snapshot.docs.length, (index) => Herd.fromJson(snapshot.docs[index].data()));
       notifyListeners();
     });
   }
