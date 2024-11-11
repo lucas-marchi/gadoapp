@@ -12,6 +12,9 @@ class _AddBovinePageState extends State<AddBovinePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Adicionar bovino'),
+      ),
       body: Center(
         child: Text('Add bovine'),
       ),
