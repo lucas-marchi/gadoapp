@@ -22,6 +22,8 @@ Bovine _$BovineFromJson(Map<String, dynamic> json) {
 mixin _$Bovine {
   String? get id => throw _privateConstructorUsedError;
   set id(String? value) => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  set name(String? value) => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
   set status(String value) => throw _privateConstructorUsedError;
   String get gender => throw _privateConstructorUsedError;
@@ -57,6 +59,7 @@ abstract class $BovineCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
+      String? name,
       String status,
       String gender,
       String? breed,
@@ -87,6 +90,7 @@ class _$BovineCopyWithImpl<$Res, $Val extends Bovine>
   @override
   $Res call({
     Object? id = freezed,
+    Object? name = freezed,
     Object? status = null,
     Object? gender = null,
     Object? breed = freezed,
@@ -101,6 +105,10 @@ class _$BovineCopyWithImpl<$Res, $Val extends Bovine>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String?,
       status: null == status
           ? _value.status
@@ -179,6 +187,7 @@ abstract class _$$BovineImplCopyWith<$Res> implements $BovineCopyWith<$Res> {
   @useResult
   $Res call(
       {String? id,
+      String? name,
       String status,
       String gender,
       String? breed,
@@ -209,6 +218,7 @@ class __$$BovineImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? name = freezed,
     Object? status = null,
     Object? gender = null,
     Object? breed = freezed,
@@ -223,6 +233,10 @@ class __$$BovineImplCopyWithImpl<$Res>
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String?,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String?,
       status: null == status
           ? _value.status
@@ -269,6 +283,7 @@ class __$$BovineImplCopyWithImpl<$Res>
 class _$BovineImpl implements _Bovine {
   _$BovineImpl(
       {this.id,
+      this.name,
       required this.status,
       required this.gender,
       this.breed,
@@ -284,6 +299,8 @@ class _$BovineImpl implements _Bovine {
 
   @override
   String? id;
+  @override
+  String? name;
   @override
   String status;
   @override
@@ -305,7 +322,7 @@ class _$BovineImpl implements _Bovine {
 
   @override
   String toString() {
-    return 'Bovine(id: $id, status: $status, gender: $gender, breed: $breed, herd: $herd, weight: $weight, birth: $birth, dad: $dad, mom: $mom, description: $description)';
+    return 'Bovine(id: $id, name: $name, status: $status, gender: $gender, breed: $breed, herd: $herd, weight: $weight, birth: $birth, dad: $dad, mom: $mom, description: $description)';
   }
 
   /// Create a copy of Bovine
@@ -327,6 +344,7 @@ class _$BovineImpl implements _Bovine {
 abstract class _Bovine implements Bovine {
   factory _Bovine(
       {String? id,
+      String? name,
       required String status,
       required String gender,
       String? breed,
@@ -342,6 +360,9 @@ abstract class _Bovine implements Bovine {
   @override
   String? get id;
   set id(String? value);
+  @override
+  String? get name;
+  set name(String? value);
   @override
   String get status;
   set status(String value);

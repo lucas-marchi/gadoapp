@@ -10,6 +10,7 @@ part 'bovine.g.dart';
 class Bovine with _$Bovine {
   factory Bovine({
     String? id,
+    String? name,
     required String status,
     required String gender,
     String? breed,

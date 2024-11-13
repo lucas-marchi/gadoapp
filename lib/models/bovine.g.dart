@@ -8,6 +8,7 @@ part of 'bovine.dart';
 
 _$BovineImpl _$$BovineImplFromJson(Map<String, dynamic> json) => _$BovineImpl(
       id: json['id'] as String?,
+      name: json['name'] as String?,
       status: json['status'] as String,
       gender: json['gender'] as String,
       breed: json['breed'] as String?,
@@ -28,6 +29,7 @@ _$BovineImpl _$$BovineImplFromJson(Map<String, dynamic> json) => _$BovineImpl(
 Map<String, dynamic> _$$BovineImplToJson(_$BovineImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'name': instance.name,
       'status': instance.status,
       'gender': instance.gender,
       'breed': instance.breed,
