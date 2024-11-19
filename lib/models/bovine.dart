@@ -1,13 +1,14 @@
 import 'dart:ffi';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:gadoapp/models/herds.dart';
+import 'package:gadoapp/models/herd.dart';
 
 part 'bovine.freezed.dart';
 part 'bovine.g.dart';
 
 @unfreezed
 class Bovine with _$Bovine {
+  @JsonSerializable(explicitToJson: true)
   factory Bovine({
     String? id,
     String? name,

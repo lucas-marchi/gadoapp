@@ -279,7 +279,8 @@ class __$$BovineImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(explicitToJson: true)
 class _$BovineImpl implements _Bovine {
   _$BovineImpl(
       {this.id,

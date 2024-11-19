@@ -33,10 +33,10 @@ Map<String, dynamic> _$$BovineImplToJson(_$BovineImpl instance) =>
       'status': instance.status,
       'gender': instance.gender,
       'breed': instance.breed,
-      'herd': instance.herd,
+      'herd': instance.herd?.toJson(),
       'weight': instance.weight,
       'birth': instance.birth.toIso8601String(),
-      'dad': instance.dad,
-      'mom': instance.mom,
+      'dad': instance.dad?.toJson(),
+      'mom': instance.mom?.toJson(),
       'description': instance.description,
     };

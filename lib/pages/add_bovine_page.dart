@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gadoapp/customwidgets/radio_group.dart';
 import 'package:gadoapp/models/bovine.dart';
-import 'package:gadoapp/models/herds.dart';
+import 'package:gadoapp/models/herd.dart';
 import 'package:gadoapp/providers/bovine_provider.dart';
 import 'package:gadoapp/utils/constants.dart';
+import 'package:gadoapp/utils/widget_functions.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class AddBovinePage extends StatefulWidget {
@@ -20,8 +22,10 @@ class _AddBovinePageState extends State<AddBovinePage> {
   final _breedController = TextEditingController();
   final _weightController = TextEditingController();
   final _descriptionController = TextEditingController();
-  final _dateController = TextEditingController();
+  final _birthController = TextEditingController();
 
+  Bovine? mom;
+  Bovine? dad;
   Herd? herd;
   final _formKey = GlobalKey<FormState>();
   String bovineStatus = BovineUtils.statusList.first;
@@ -92,7 +96,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
               padding: const EdgeInsets.all(4.0),
               child: TextField(
                 keyboardType: TextInputType.number,
-                controller: _dateController,
+                controller: _birthController,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   filled: true,
@@ -147,6 +151,25 @@ class _AddBovinePageState extends State<AddBovinePage> {
                               onChanged: (value) {
                                 herd = value;
                               }),
+                    ))), 
+                    Card(
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Consumer<BovineProvider>(
+                      builder: (context, provider, child) =>
+                          DropdownButtonFormField<Bovine>(
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none),
+                              hint: const Text('Selecionar pai'),
+                              isExpanded: true,
+                              value: dad,
+                              items: provider.bovineList
+                                  .map((item) => DropdownMenuItem<Bovine>(
+                                      value: item, child: Text(item.name!)))
+                                  .toList(),
+                              onChanged: (value) {
+                                dad = value;
+                              }),
                     ))),
           ],
         ),
@@ -160,11 +183,21 @@ class _AddBovinePageState extends State<AddBovinePage> {
     _breedController.dispose();
     _weightController.dispose();
     _descriptionController.dispose();
-    _dateController.dispose();
+    _birthController.dispose();
     super.dispose();
   }
 
   void _saveBovine() async {
+    String birthString = _birthController.text;
+    DateTime birthDate;
+    try {
+      DateFormat format = DateFormat("dd/MM/yyyy");
+      birthDate = format.parse(birthString);
+    } catch (e) {
+      print("Erro ao converter a data: $e");
+      return;
+    }
+
     if(_formKey.currentState!.validate()) {
       EasyLoading.show(status: 'Aguarde');
       try {
@@ -175,12 +208,18 @@ class _AddBovinePageState extends State<AddBovinePage> {
           breed: _breedController.text,
           herd: herd!,
           weight: num.parse(_weightController.text),
-          birth: DateTime(0), //tem que arrumar aqui
+          birth: birthDate,
           dad: null,
           mom: null,
           description: _descriptionController.text,
           );
+          await Provider.of<BovineProvider>(context, listen: false)
+          .addBovine(bovine);
+          EasyLoading.dismiss();
+          showMsg(context, 'Salvo');
+          _resetFields();
       } catch(error) {
+        EasyLoading.dismiss();
         print(error.toString());
       }
     }
@@ -188,6 +227,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
 
   Future<void> _selectDate() async {
     DateTime? _picked = await showDatePicker(
+
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
@@ -196,8 +236,23 @@ class _AddBovinePageState extends State<AddBovinePage> {
 
     if(_picked != null) {
       setState(() {
-        _dateController.text = _picked.toString().split(" ")[0];
+        _birthController.text = _picked.toString().split(" ")[0];
       });
     }
+  }
+  
+  void _resetFields() {
+    setState(() {
+      _nameController.clear();
+      _breedController.clear();
+      _weightController.clear();
+      _descriptionController.clear();
+      _birthController.clear();
+      dad = null;
+      mom = null;
+      herd = null;
+      bovineGender = BovineUtils.genderList.first;
+      bovineStatus = BovineUtils.statusList.first;
+    });
   }
 }
