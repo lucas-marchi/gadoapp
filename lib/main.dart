@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gadoapp/auth/auth_service.dart';
 import 'package:gadoapp/pages/add_bovine_page.dart';
 import 'package:gadoapp/pages/dashboard_page.dart';
@@ -11,6 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:gadoapp/pages/login_page.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,6 +43,14 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routerConfig: _router,
+
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate
+      ],
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('pt')
+      ],
     );
   }
 

@@ -209,8 +209,8 @@ class _AddBovinePageState extends State<AddBovinePage> {
           herd: herd!,
           weight: num.parse(_weightController.text),
           birth: birthDate,
-          dad: null,
-          mom: null,
+          dad: dad!,
+          mom: mom!,
           description: _descriptionController.text,
           );
           await Provider.of<BovineProvider>(context, listen: false)
@@ -227,11 +227,16 @@ class _AddBovinePageState extends State<AddBovinePage> {
 
   Future<void> _selectDate() async {
     DateTime? _picked = await showDatePicker(
-
       context: context,
+      locale: const Locale('pt', 'PT'),
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
-      lastDate: DateTime(2100)
+      lastDate: DateTime(2100),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light(), 
+          child: child!);
+      }
     );
 
     if(_picked != null) {
