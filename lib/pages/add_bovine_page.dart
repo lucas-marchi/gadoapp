@@ -151,8 +151,8 @@ class _AddBovinePageState extends State<AddBovinePage> {
                               onChanged: (value) {
                                 herd = value;
                               }),
-                    ))), 
-                    Card(
+                    ))),
+            Card(
                 child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Consumer<BovineProvider>(
@@ -188,37 +188,37 @@ class _AddBovinePageState extends State<AddBovinePage> {
   }
 
   void _saveBovine() async {
-    String birthString = _birthController.text;
+    String birthString = _birthController.text.trim();
     DateTime birthDate;
     try {
-      DateFormat format = DateFormat("dd/MM/yyyy");
+      DateFormat format = DateFormat("yyyy-MM-dd");
       birthDate = format.parse(birthString);
     } catch (e) {
       print("Erro ao converter a data: $e");
       return;
     }
 
-    if(_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate()) {
       EasyLoading.show(status: 'Aguarde');
       try {
         final bovine = Bovine(
           name: _nameController.text,
-          status: bovineStatus, 
-          gender: bovineGender, 
+          status: bovineStatus,
+          gender: bovineGender,
           breed: _breedController.text,
           herd: herd!,
           weight: num.parse(_weightController.text),
           birth: birthDate,
-          dad: dad!,
-          mom: mom!,
+          dad: dad,
+          mom: mom,
           description: _descriptionController.text,
-          );
-          await Provider.of<BovineProvider>(context, listen: false)
-          .addBovine(bovine);
-          EasyLoading.dismiss();
-          showMsg(context, 'Salvo');
-          _resetFields();
-      } catch(error) {
+        );
+        await Provider.of<BovineProvider>(context, listen: false)
+            .addBovine(bovine);
+        EasyLoading.dismiss();
+        showMsg(context, 'Salvo');
+        _resetFields();
+      } catch (error) {
         EasyLoading.dismiss();
         print(error.toString());
       }
@@ -227,25 +227,22 @@ class _AddBovinePageState extends State<AddBovinePage> {
 
   Future<void> _selectDate() async {
     DateTime? _picked = await showDatePicker(
-      context: context,
-      locale: const Locale('pt', 'PT'),
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light(), 
-          child: child!);
-      }
-    );
+        context: context,
+        locale: const Locale('pt', 'PT'),
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2100),
+        builder: (BuildContext context, Widget? child) {
+          return Theme(data: ThemeData.light(), child: child!);
+        });
 
-    if(_picked != null) {
+    if (_picked != null) {
       setState(() {
         _birthController.text = _picked.toString().split(" ")[0];
       });
     }
   }
-  
+
   void _resetFields() {
     setState(() {
       _nameController.clear();
