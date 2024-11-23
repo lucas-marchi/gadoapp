@@ -20,6 +20,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void didChangeDependencies() {
     Provider.of<BovineProvider>(context, listen: false).getAllHerds();
+    Provider.of<BovineProvider>(context, listen: false).getAllBovines();
     super.didChangeDependencies();
   }
   @override

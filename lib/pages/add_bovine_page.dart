@@ -171,6 +171,25 @@ class _AddBovinePageState extends State<AddBovinePage> {
                                 dad = value;
                               }),
                     ))),
+            Card(
+                child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Consumer<BovineProvider>(
+                      builder: (context, provider, child) =>
+                          DropdownButtonFormField<Bovine>(
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none),
+                              hint: const Text('Selecionar mãe'),
+                              isExpanded: true,
+                              value: mom,
+                              items: provider.bovineList
+                                  .map((item) => DropdownMenuItem<Bovine>(
+                                      value: item, child: Text(item.name!)))
+                                  .toList(),
+                              onChanged: (value) {
+                                mom = value;
+                              }),
+                    ))),
           ],
         ),
       ),
