@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gadoapp/main.dart';
+import 'package:gadoapp/pages/bovine_details_page.dart';
 import 'package:gadoapp/providers/bovine_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +25,7 @@ class _ViewBovinePageState extends State<ViewBovinePage> {
               final bovine = provider.bovineList[index];
               return InkWell(
                 onTap: () {
-
+                  //context.goNamed(BovineDetailsPage.routeName, extra: bovine.id);
                 },
                 child: Card(
                   elevation: 0,

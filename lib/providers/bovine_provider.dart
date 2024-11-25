@@ -26,6 +26,9 @@ class BovineProvider with ChangeNotifier{
     });
   }
 
+  Bovine findBovineById(String id) =>
+    bovineList.firstWhere((element) => element.id == id);
+
   Future<void> addBovine(Bovine bovine) {
     return DbHelper.addBovine(bovine);
   }

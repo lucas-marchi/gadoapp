@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gadoapp/auth/auth_service.dart';
 import 'package:gadoapp/pages/add_bovine_page.dart';
+import 'package:gadoapp/pages/bovine_details_page.dart';
 import 'package:gadoapp/pages/dashboard_page.dart';
 import 'package:gadoapp/pages/herd_page.dart';
 import 'package:gadoapp/pages/view_bovine_page.dart';
@@ -76,7 +77,14 @@ class MyApp extends StatelessWidget {
           GoRoute(
             name: ViewBovinePage.routeName,
             path: ViewBovinePage.routeName,
-            builder: (context, state) => const ViewBovinePage()
+            builder: (context, state) => const ViewBovinePage(),
+            routes: [
+              GoRoute(
+                name: BovineDetailsPage.routeName,
+                path: BovineDetailsPage.routeName,
+                builder: (context, state) => BovineDetailsPage(id: state.extra! as String,),
+              )
+            ]
           ),
           GoRoute(
             name: HerdPage.routeName,
