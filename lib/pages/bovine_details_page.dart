@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gadoapp/models/bovine.dart';
 import 'package:gadoapp/providers/bovine_provider.dart';
+import 'package:gadoapp/utils/widget_functions.dart';
 import 'package:provider/provider.dart';
 
 class BovineDetailsPage extends StatefulWidget {
@@ -33,19 +35,120 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
       ),
       body: ListView(
         children: [
-          ElevatedButton(
-            onPressed: () {
+          // ElevatedButton(
+          //   onPressed: () {
 
-            }, 
-            child: Text(bovine.description == null
-              ? 'Adicionar Descrição'
-              : 'Mostrar Descrição'),
+          //   }, 
+          //   child: Text(bovine.description == null
+          //     ? 'Adicionar Descrição'
+          //     : 'Mostrar Descrição'),
+          // ),
+          ListTile(
+            title: Text('Nome ou brinco:  ${bovine.name!}'),
+
+            trailing: IconButton(
+              onPressed: () {
+                showSingleTextInputDialog(
+                  context: context, 
+                  title: 'Editar nome ou brinco', 
+                  onSubmit: (value) {
+                    EasyLoading.show(status: 'Aguarde...');
+                  }
+                );
+              }, 
+              icon: const Icon(Icons.edit),
+            ),
           ),
           ListTile(
-            title: Text(bovine.name!),
-            subtitle: Text(bovine.breed!),
+            title: Text('Raça: ${bovine.breed!}'),
+            trailing: IconButton(
+              onPressed: () {
+                showSingleTextInputDialog(
+                  context: context, 
+                  title: 'Editar raça', 
+                  onSubmit: (value) {
+                    EasyLoading.show(status: 'Aguarde...');
+                  }
+                );
+              }, 
+              icon: const Icon(Icons.edit),
+            ),
           ),
-          
+          ListTile(
+            title: Text('Status: ${bovine.status}'),
+            trailing: IconButton(
+              onPressed: () {
+                showSingleTextInputDialog(
+                  context: context, 
+                  title: 'Editar status', 
+                  onSubmit: (value) {
+                    EasyLoading.show(status: 'Aguarde...');
+                  }
+                );
+              }, 
+              icon: const Icon(Icons.edit),
+            ),
+          ),
+          ListTile(
+            title: Text('Peso: ${bovine.weight.toString()}kg'),
+            trailing: IconButton(
+              onPressed: () {
+                showSingleTextInputDialog(
+                  context: context, 
+                  title: 'Editar peso', 
+                  onSubmit: (value) {
+                    EasyLoading.show(status: 'Aguarde...');
+                  }
+                );
+              }, 
+              icon: const Icon(Icons.edit),
+            ),
+          ),
+          ListTile(
+            title: Text('Data de nascimento: ${bovine.birth.toString()}'),
+            trailing: IconButton(
+              onPressed: () {
+                showSingleTextInputDialog(
+                  context: context, 
+                  title: 'Editar data de nascimento', 
+                  onSubmit: (value) {
+                    EasyLoading.show(status: 'Aguarde...');
+                  }
+                );
+              }, 
+              icon: const Icon(Icons.edit),
+            ),
+          ),
+          ListTile(
+            title: Text('Sexo: ${bovine.gender}'),
+            trailing: IconButton(
+              onPressed: () {
+                showSingleTextInputDialog(
+                  context: context, 
+                  title: 'Editar genero', 
+                  onSubmit: (value) {
+                    EasyLoading.show(status: 'Aguarde...');
+                  }
+                );
+              }, 
+              icon: const Icon(Icons.edit),
+            ),
+          ),
+          ListTile(
+            title: Text('Descrição: ${bovine.description!}'),
+            trailing: IconButton(
+              onPressed: () {
+                showSingleTextInputDialog(
+                  context: context, 
+                  title: 'Editar nome ou brinco', 
+                  onSubmit: (value) {
+                    EasyLoading.show(status: 'Aguarde...');
+                  }
+                );
+              }, 
+              icon: const Icon(Icons.edit),
+            ),
+          ),
         ],
       ),
     );
