@@ -30,4 +30,8 @@ class DbHelper {
     bovine.id = doc.id;
     return doc.set(bovine.toJson());
   }
+
+  static Future<void> updateBovineFields(String id, Map<String, dynamic> map) {
+    return _db.collection(collectionBovine).doc(id).update(map);
+  }
 }

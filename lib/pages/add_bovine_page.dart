@@ -123,7 +123,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   filled: true,
-                  labelText: 'Descrição:',
+                  labelText: 'Observação:',
                 ),
               ),
             ),
@@ -134,8 +134,10 @@ class _AddBovinePageState extends State<AddBovinePage> {
                       builder: (context, provider, child) =>
                           DropdownButtonFormField<Herd>(
                               decoration: const InputDecoration(
-                                  border: InputBorder.none),
-                              hint: const Text('Adicionar á um rebanho'),
+                                  border: InputBorder.none,
+                                  labelText: 'Rebanho:'
+                              ),
+                              hint: const Text('Não selecionado'),
                               isExpanded: true,
                               value: herd,
                               items: provider.herdList
@@ -159,8 +161,10 @@ class _AddBovinePageState extends State<AddBovinePage> {
                       builder: (context, provider, child) =>
                           DropdownButtonFormField<Bovine>(
                               decoration: const InputDecoration(
-                                  border: InputBorder.none),
-                              hint: const Text('Selecionar pai'),
+                                border: InputBorder.none,
+                                labelText: 'Pai:'
+                              ),
+                              hint: const Text('Não selecionado'),
                               isExpanded: true,
                               value: dad,
                               items: provider.bovineList
@@ -178,7 +182,9 @@ class _AddBovinePageState extends State<AddBovinePage> {
                       builder: (context, provider, child) =>
                           DropdownButtonFormField<Bovine>(
                               decoration: const InputDecoration(
-                                  border: InputBorder.none),
+                                  border: InputBorder.none,
+                                  labelText: 'Mãe:'
+                              ),
                               hint: const Text('Selecionar mãe'),
                               isExpanded: true,
                               value: mom,

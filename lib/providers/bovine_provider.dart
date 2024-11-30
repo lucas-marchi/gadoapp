@@ -32,4 +32,8 @@ class BovineProvider with ChangeNotifier{
   Future<void> addBovine(Bovine bovine) {
     return DbHelper.addBovine(bovine);
   }
+
+  Future<void> updateBovineFields(String id, String field, dynamic value) {
+    return DbHelper.updateBovineFields(id, {field : value});
+  }
 }

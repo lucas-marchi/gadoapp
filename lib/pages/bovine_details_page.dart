@@ -53,6 +53,12 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
                   title: 'Editar nome ou brinco', 
                   onSubmit: (value) {
                     EasyLoading.show(status: 'Aguarde...');
+                    provider
+                    .updateBovineFields(bovine.id!, 'name', value)
+                    .then((value) {
+                      EasyLoading.dismiss();
+                      showMsg(context, 'Nome atualizado!');
+                    });
                   }
                 );
               }, 
@@ -68,6 +74,12 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
                   title: 'Editar raça', 
                   onSubmit: (value) {
                     EasyLoading.show(status: 'Aguarde...');
+                    provider
+                    .updateBovineFields(bovine.id!, 'breed', value)
+                    .then((value) {
+                      EasyLoading.dismiss();
+                      showMsg(context, 'Raça atualizado!');
+                    });
                   }
                 );
               }, 
@@ -83,6 +95,12 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
                   title: 'Editar status', 
                   onSubmit: (value) {
                     EasyLoading.show(status: 'Aguarde...');
+                    provider
+                    .updateBovineFields(bovine.id!, 'status', value)
+                    .then((value) {
+                      EasyLoading.dismiss();
+                      showMsg(context, 'Status atualizado!');
+                    });
                   }
                 );
               }, 
@@ -98,6 +116,12 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
                   title: 'Editar peso', 
                   onSubmit: (value) {
                     EasyLoading.show(status: 'Aguarde...');
+                    provider
+                    .updateBovineFields(bovine.id!, 'weight', num.parse(value))
+                    .then((value) {
+                      EasyLoading.dismiss();
+                      showMsg(context, 'Peso atualizado!');
+                    });
                   }
                 );
               }, 
@@ -140,9 +164,15 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
               onPressed: () {
                 showSingleTextInputDialog(
                   context: context, 
-                  title: 'Editar nome ou brinco', 
+                  title: 'Editar descrição', 
                   onSubmit: (value) {
                     EasyLoading.show(status: 'Aguarde...');
+                    provider
+                    .updateBovineFields(bovine.id!, 'description', value)
+                    .then((value) {
+                      EasyLoading.dismiss();
+                      showMsg(context, 'Descrição atualizado!');
+                    });
                   }
                 );
               }, 
