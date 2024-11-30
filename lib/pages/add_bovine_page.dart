@@ -49,10 +49,18 @@ class _AddBovinePageState extends State<AddBovinePage> {
               padding: const EdgeInsets.all(4.0),
               child: TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.circular(5.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade800),
+                    borderRadius: BorderRadius.circular(5.5),
+                  ),
                   filled: true,
                   labelText: 'Nome ou brinco:',
+                  labelStyle:  TextStyle(color: Colors.grey.shade800),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -66,10 +74,18 @@ class _AddBovinePageState extends State<AddBovinePage> {
               padding: const EdgeInsets.all(4.0),
               child: TextFormField(
                 controller: _breedController,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.circular(5.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade800),
+                    borderRadius: BorderRadius.circular(5.5),
+                  ),
                   filled: true,
                   labelText: 'Raça:',
+                  labelStyle:  TextStyle(color: Colors.grey.shade800),
                 ),
               ),
             ),
@@ -85,10 +101,18 @@ class _AddBovinePageState extends State<AddBovinePage> {
               child: TextFormField(
                 keyboardType: TextInputType.number,
                 controller: _weightController,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.circular(5.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade800),
+                    borderRadius: BorderRadius.circular(5.5),
+                  ),
                   filled: true,
                   labelText: 'Peso:',
+                  labelStyle:  TextStyle(color: Colors.grey.shade800),
                 ),
               ),
             ),
@@ -97,9 +121,18 @@ class _AddBovinePageState extends State<AddBovinePage> {
               child: TextField(
                 keyboardType: TextInputType.number,
                 controller: _birthController,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.circular(5.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade800),
+                    borderRadius: BorderRadius.circular(5.5),
+                  ),
                   filled: true,
+                  labelStyle:  TextStyle(color: Colors.grey.shade800),
+                  border: InputBorder.none,
                   labelText: 'Data de nascimento:',
                   prefixIcon: Icon(Icons.calendar_today),
                 ),
@@ -120,10 +153,18 @@ class _AddBovinePageState extends State<AddBovinePage> {
               padding: const EdgeInsets.all(4.0),
               child: TextFormField(
                 controller: _descriptionController,
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.transparent),
+                    borderRadius: BorderRadius.circular(5.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey.shade800),
+                    borderRadius: BorderRadius.circular(5.5),
+                  ),
                   filled: true,
                   labelText: 'Observação:',
+                  labelStyle:  TextStyle(color: Colors.grey.shade800),
                 ),
               ),
             ),
@@ -135,8 +176,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
                           DropdownButtonFormField<Herd>(
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
-                                  labelText: 'Rebanho:'
-                              ),
+                                  labelText: 'Rebanho:'),
                               hint: const Text('Não selecionado'),
                               isExpanded: true,
                               value: herd,
@@ -161,9 +201,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
                       builder: (context, provider, child) =>
                           DropdownButtonFormField<Bovine>(
                               decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                labelText: 'Pai:'
-                              ),
+                                  border: InputBorder.none, labelText: 'Pai:'),
                               hint: const Text('Não selecionado'),
                               isExpanded: true,
                               value: dad,
@@ -182,9 +220,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
                       builder: (context, provider, child) =>
                           DropdownButtonFormField<Bovine>(
                               decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  labelText: 'Mãe:'
-                              ),
+                                  border: InputBorder.none, labelText: 'Mãe:'),
                               hint: const Text('Selecionar mãe'),
                               isExpanded: true,
                               value: mom,

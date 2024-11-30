@@ -40,17 +40,17 @@ class MyApp extends StatelessWidget {
       title: 'gadoapp',
       builder: EasyLoading.init(),
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey.shade900),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
         useMaterial3: true,
       ),
       routerConfig: _router,
 
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate
       ],
-      supportedLocales: [
-        const Locale('en'),
-        const Locale('pt')
+      supportedLocales: const [
+        Locale('en'),
+        Locale('pt')
       ],
     );
   }
