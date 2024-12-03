@@ -29,18 +29,42 @@ class _ViewBovinePageState extends State<ViewBovinePage> {
                   context.goNamed(BovineDetailsPage.routeName, extra: bovine.id);
                 },
                 child: Card(
+                  color: Colors.grey[300],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
                   elevation: 0,
-                  color: Colors.transparent,
                   child: Row(
                     children: [
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(bovine.name!, style: const TextStyle(fontSize: 16,),),
-                              Text(bovine.breed!, style: const TextStyle(color: Colors.grey, overflow: TextOverflow.ellipsis),)
+                              Text(bovine.name!, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                            ],
+                          ),
+                        )
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(bovine.gender, style: const TextStyle(fontSize: 16,),),
+                            ],
+                          ),
+                        )
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(bovine.breed!, style: const TextStyle(fontSize: 16,),),
                             ],
                           ),
                         )
