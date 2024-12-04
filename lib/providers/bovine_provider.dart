@@ -36,4 +36,10 @@ class BovineProvider with ChangeNotifier{
   Future<void> updateBovineFields(String id, String field, dynamic value) {
     return DbHelper.updateBovineFields(id, {field : value});
   }
+
+  Future<void> deleteBovine(String id) async {
+    await DbHelper.deleteBovine(id);
+    bovineList.removeWhere((bovine) => bovine.id == id);
+    notifyListeners();
+  }
 }

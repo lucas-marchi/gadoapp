@@ -206,7 +206,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
                               isExpanded: true,
                               value: dad,
                               items: provider.bovineList
-                                  .where((bovine) => bovine.gender == 'Macho')
+                                  //.where((bovine) => bovine.gender == 'Macho')
                                   .map((item) => DropdownMenuItem<Bovine>(
                                       value: item, child: Text(item.name!)))
                                   .toList(),
@@ -226,7 +226,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
                               isExpanded: true,
                               value: mom,
                               items: provider.bovineList
-                                  .where((bovine) => bovine.gender == 'Fêmea')
+                                  //.where((bovine) => bovine.gender == 'Fêmea')
                                   .map((item) => DropdownMenuItem<Bovine>(
                                       value: item, child: Text(item.name!)))
                                   .toList(),

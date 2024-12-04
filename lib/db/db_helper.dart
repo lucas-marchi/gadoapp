@@ -34,4 +34,8 @@ class DbHelper {
   static Future<void> updateBovineFields(String id, Map<String, dynamic> map) {
     return _db.collection(collectionBovine).doc(id).update(map);
   }
+
+  static Future<void> deleteBovine(String id) async {
+    await _db.collection(collectionBovine).doc(id).delete();
+  }
 }

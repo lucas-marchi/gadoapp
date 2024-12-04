@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:gadoapp/pages/view_bovine_page.dart';
 import 'package:gadoapp/providers/bovine_provider.dart';
 import 'package:gadoapp/utils/widget_functions.dart';
 import 'package:provider/provider.dart';
@@ -44,6 +45,15 @@ class HerdPage extends StatelessWidget {
                   final herd = provider.herdList[index];
                   return ListTile(
                     title: Text(herd.name),
+                    onTap: () {
+                      // final filteredBovines = provider.bovineList
+                      //     .where((bovine) => bovine.herd!.id == herd.id)
+                      //     .toList();
+                      // Navigator.of(context).pushNamed(
+                      //   ViewBovinePage.routeName,
+                      //   arguments: filteredBovines,
+                      // );
+                    },
                   );
                 },
               ),
