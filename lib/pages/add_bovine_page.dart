@@ -60,7 +60,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
                   ),
                   filled: true,
                   labelText: 'Nome ou brinco:',
-                  labelStyle:  TextStyle(color: Colors.grey.shade800),
+                  labelStyle: TextStyle(color: Colors.grey.shade800),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -85,7 +85,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
                   ),
                   filled: true,
                   labelText: 'Raça:',
-                  labelStyle:  TextStyle(color: Colors.grey.shade800),
+                  labelStyle: TextStyle(color: Colors.grey.shade800),
                 ),
               ),
             ),
@@ -112,7 +112,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
                   ),
                   filled: true,
                   labelText: 'Peso:',
-                  labelStyle:  TextStyle(color: Colors.grey.shade800),
+                  labelStyle: TextStyle(color: Colors.grey.shade800),
                 ),
               ),
             ),
@@ -131,7 +131,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
                     borderRadius: BorderRadius.circular(5.5),
                   ),
                   filled: true,
-                  labelStyle:  TextStyle(color: Colors.grey.shade800),
+                  labelStyle: TextStyle(color: Colors.grey.shade800),
                   border: InputBorder.none,
                   labelText: 'Data de nascimento:',
                   prefixIcon: Icon(Icons.calendar_today),
@@ -164,7 +164,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
                   ),
                   filled: true,
                   labelText: 'Observação:',
-                  labelStyle:  TextStyle(color: Colors.grey.shade800),
+                  labelStyle: TextStyle(color: Colors.grey.shade800),
                 ),
               ),
             ),
@@ -290,14 +290,12 @@ class _AddBovinePageState extends State<AddBovinePage> {
 
   Future<void> _selectDate() async {
     DateTime? _picked = await showDatePicker(
-        context: context,
-        locale: const Locale('pt', 'PT'),
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2100),
-        builder: (BuildContext context, Widget? child) {
-          return Theme(data: ThemeData.light(), child: child!);
-        });
+      context: context,
+      locale: const Locale('pt', 'PT'),
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
 
     if (_picked != null) {
       setState(() {

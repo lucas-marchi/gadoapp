@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:gadoapp/customwidgets/radio_group.dart';
 import 'package:gadoapp/models/bovine.dart';
 import 'package:gadoapp/pages/herd_page.dart';
 import 'package:gadoapp/pages/view_bovine_page.dart';
 import 'package:gadoapp/providers/bovine_provider.dart';
+import 'package:gadoapp/utils/constants.dart';
 import 'package:gadoapp/utils/widget_functions.dart';
 import 'package:provider/provider.dart';
 
@@ -86,20 +88,7 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
           ListTile(
             title: Text('Status: ${bovine.status}'),
             trailing: IconButton(
-              onPressed: () {
-                showSingleTextInputDialog(
-                    context: context,
-                    title: 'Editar status',
-                    onSubmit: (value) {
-                      EasyLoading.show(status: 'Aguarde...');
-                      provider
-                          .updateBovineFields(bovine.id!, 'status', value)
-                          .then((value) {
-                        EasyLoading.dismiss();
-                        showMsg(context, 'Status atualizado!');
-                      });
-                    });
-              },
+              onPressed: _editStatus,
               icon: const Icon(Icons.edit),
             ),
           ),
@@ -125,16 +114,10 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
             ),
           ),
           ListTile(
-            title: Text('Data de nascimento: ${bovine.birth.toString()}'),
+            title: Text(
+                'Data de nascimento: ${bovine.birth.toLocal().toString().split(' ')[0]}'),
             trailing: IconButton(
-              onPressed: () {
-                showSingleTextInputDialog(
-                    context: context,
-                    title: 'Editar data de nascimento',
-                    onSubmit: (value) {
-                      EasyLoading.show(status: 'Aguarde...');
-                    });
-              },
+              onPressed: _editBirthDate,
               icon: const Icon(Icons.edit),
             ),
           ),
@@ -193,7 +176,7 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
             ),
             TextButton(
               onPressed: () {
-                provider.deleteBovine(bovine.id!).then((value){
+                provider.deleteBovine(bovine.id!).then((value) {
                   EasyLoading.dismiss();
                   showMsg(context, 'Excluído');
                 });
@@ -232,6 +215,72 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
           ),
         ],
       ),
+    );
+  }
+
+  void _editBirthDate() async {
+    DateTime? selectedDate = await showDatePicker(
+      context: context,
+      locale: const Locale('pt', 'PT'),
+      initialDate: bovine.birth,
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+    );
+
+    if (selectedDate != null) {
+      EasyLoading.show(status: 'Aguarde...');
+      provider
+          .updateBovineFields(
+              bovine.id!, 'birth', selectedDate.toIso8601String())
+          .then((_) {
+        EasyLoading.dismiss();
+        showMsg(context, 'Data de nascimento atualizada!');
+      });
+    }
+  }
+
+  void _editStatus() {
+    String selectedStatus =
+        bovine.status; // Variável para armazenar o status selecionado
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Editar Status'),
+          content: RadioGroup(
+            label: 'Selecione o Status',
+            groupValue: selectedStatus,
+            items: BovineUtils.statusList,
+            onItemSelected: (value) {
+              selectedStatus = value; // Atualiza a variável temporária
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pop(); // Fecha o diálogo sem fazer alterações
+              },
+              child: Text('Fechar'),
+            ),
+            TextButton(
+              onPressed: () {
+                EasyLoading.show(status: 'Aguarde...');
+                provider
+                    .updateBovineFields(bovine.id!, 'status', selectedStatus)
+                    .then((_) {
+                  EasyLoading.dismiss();
+                  showMsg(context, 'Status atualizado!');
+                  Navigator.of(context)
+                      .pop(); // Fecha o diálogo após a atualização
+                });
+              },
+              child: Text('Salvar'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

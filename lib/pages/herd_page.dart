@@ -43,8 +43,32 @@ class HerdPage extends StatelessWidget {
                 itemCount: provider.herdList.length,
                 itemBuilder: (context, index) {
                   final herd = provider.herdList[index];
-                  return ListTile(
-                    title: Text(herd.name),
+                  return InkWell(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16),
+                      child: Card(
+                        color: Color.fromRGBO(222, 227, 227, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        elevation: 0,
+                        child: Row(
+                          children: [
+                            Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(herd.name, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                                ],
+                              ),
+                            )
+                          ),
+                          ],
+                        ),
+                      ),
+                    ),
                     onTap: () {
                       // final filteredBovines = provider.bovineList
                       //     .where((bovine) => bovine.herd!.id == herd.id)
