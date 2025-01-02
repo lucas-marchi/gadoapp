@@ -134,7 +134,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
                   labelStyle: TextStyle(color: Colors.grey.shade800),
                   border: InputBorder.none,
                   labelText: 'Data de nascimento:',
-                  prefixIcon: Icon(Icons.calendar_today),
+                  prefixIcon: const Icon(Icons.calendar_today),
                 ),
                 readOnly: true,
                 onTap: () {
@@ -289,7 +289,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
   }
 
   Future<void> _selectDate() async {
-    DateTime? _picked = await showDatePicker(
+    DateTime? picked = await showDatePicker(
       context: context,
       locale: const Locale('pt', 'PT'),
       initialDate: DateTime.now(),
@@ -297,9 +297,9 @@ class _AddBovinePageState extends State<AddBovinePage> {
       lastDate: DateTime.now(),
     );
 
-    if (_picked != null) {
+    if (picked != null) {
       setState(() {
-        _birthController.text = _picked.toString().split(" ")[0];
+        _birthController.text = picked.toString().split(" ")[0];
       });
     }
   }

@@ -155,6 +155,25 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
               icon: const Icon(Icons.edit),
             ),
           ),
+          ListTile(
+            title: Text('Pai: ${bovine.dad?.name ?? 'Não selecionado'}'),
+            trailing: IconButton(
+              onPressed: () {
+                _editParent(context, 'Pai', bovine.dad);
+              },
+              icon: const Icon(Icons.edit),
+            ),
+          ),
+
+          ListTile(
+            title: Text('Mãe: ${bovine.mom?.name ?? 'Não selecionado'}'),
+            trailing: IconButton(
+              onPressed: () {
+                _editParent(context, 'Mãe', bovine.mom);
+              },
+              icon: const Icon(Icons.edit),
+            ),
+          ),
         ],
       ),
     );
@@ -240,29 +259,33 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
   }
 
   void _editStatus() {
-    String selectedStatus =
-        bovine.status; // Variável para armazenar o status selecionado
+    String selectedStatus = bovine.status;
 
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Editar Status'),
-          content: RadioGroup(
-            label: 'Selecione o Status',
-            groupValue: selectedStatus,
-            items: BovineUtils.statusList,
-            onItemSelected: (value) {
-              selectedStatus = value; // Atualiza a variável temporária
-            },
+          title: const Text('Editar Status'),
+          content: SingleChildScrollView(
+            child: Wrap(
+              children: [
+                RadioGroup(
+                  label: 'Selecione o Status:',
+                  groupValue: selectedStatus,
+                  items: BovineUtils.statusList,
+                  onItemSelected: (value) {
+                    selectedStatus = value;
+                  },
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context)
-                    .pop(); // Fecha o diálogo sem fazer alterações
+                Navigator.of(context).pop();
               },
-              child: Text('Fechar'),
+              child: const Text('Fechar'),
             ),
             TextButton(
               onPressed: () {
@@ -272,11 +295,88 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
                     .then((_) {
                   EasyLoading.dismiss();
                   showMsg(context, 'Status atualizado!');
-                  Navigator.of(context)
-                      .pop(); // Fecha o diálogo após a atualização
+                  Navigator.of(context).pop();
                 });
               },
-              child: Text('Salvar'),
+              child: const Text('Salvar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _editParent(
+      BuildContext context, String parentType, Bovine? currentParent) {
+    String labelText =
+        parentType == 'Pai' ? 'Pai:' : 'Mãe:';
+    Bovine? selectedParent =
+        currentParent;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Selecionar $parentType'),
+          content: Consumer<BovineProvider>(
+            builder: (context, provider, child) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButtonFormField<Bovine>(
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      labelText: labelText,
+                    ),
+                    hint: Text('Selecionar $parentType'),
+                    isExpanded: true,
+                    value: selectedParent,
+                    items: provider.bovineList
+                        .map((item) => DropdownMenuItem<Bovine>(
+                            value: item, child: Text(item.name!)))
+                        .toList(),
+                    onChanged: (value) {
+                      selectedParent = value;
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Fechar'),
+            ),
+            TextButton(
+              onPressed: () {
+                if (selectedParent != null) {
+
+                  if (parentType == 'Pai') {
+                    provider.updateBovineFields(
+                        bovine.id!, 'dad', selectedParent!.id);
+                  } else {
+                    provider.updateBovineFields(
+                        bovine.id!, 'mom', selectedParent!.id);
+                  }
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('$parentType atualizado com sucesso!'),
+                    ),
+                  );
+                } else {
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Por favor, selecione um $parentType.'),
+                    ),
+                  );
+                }
+              },
+              child: const Text('Salvar'),
             ),
           ],
         );

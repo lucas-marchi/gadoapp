@@ -47,7 +47,7 @@ class HerdPage extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 16, right: 16),
                       child: Card(
-                        color: Color.fromRGBO(222, 227, 227, 1),
+                        color: const Color.fromRGBO(222, 227, 227, 1),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
