@@ -13,9 +13,6 @@ class HerdPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Todos os rebanhos'),
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showSingleTextInputDialog(

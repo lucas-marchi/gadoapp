@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gadoapp/main.dart';
+import 'package:gadoapp/pages/add_bovine_page.dart';
 import 'package:gadoapp/pages/bovine_details_page.dart';
 import 'package:gadoapp/providers/bovine_provider.dart';
+import 'package:gadoapp/utils/widget_functions.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -17,8 +20,11 @@ class _ViewBovinePageState extends State<ViewBovinePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Bovinos"),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.goNamed(AddBovinePage.routeName);
+        },
+        child: const Icon(Icons.add),
       ),
       body: Center(
         child: Consumer<BovineProvider>(
