@@ -18,5 +18,5 @@ class DashboardModel {
 const List<DashboardModel> dashboardModelList = [
   //DashboardModel(title: 'Adicionar bovino', IconData: Icons.add, routeName: AddBovinePage.routeName),
   DashboardModel(title: 'Bovinos', IconData: Icons.inventory, routeName: ViewBovinePage.routeName),
-  DashboardModel(title: 'Animais', IconData: Icons.category, routeName: HerdPage.routeName),
+  DashboardModel(title: 'Rebanhos', IconData: Icons.category, routeName: HerdPage.routeName),
 ];

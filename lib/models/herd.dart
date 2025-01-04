@@ -26,6 +26,8 @@ class Herd {
 }
 
 // import 'package:freezed_annotation/freezed_annotation.dart';
+// part 'herd.freezed.dart';
+// part 'herd.g.dart';
 
 // @unfreezed
 // class Herd with _$Herd {
@@ -35,5 +37,5 @@ class Herd {
 //   }) = _Herd;
 
 //   factory Herd.fromJson(Map<String, dynamic> json) =>
-//   _$HerdFromJson(json);
+//     _$HerdFromJson(json);
 // }
