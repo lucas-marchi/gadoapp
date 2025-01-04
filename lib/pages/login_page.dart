@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gadoapp/auth/auth_service.dart';
-import 'package:gadoapp/main.dart';
 import 'package:gadoapp/pages/dashboard_page.dart';
 import 'package:go_router/go_router.dart';
 

@@ -47,7 +47,7 @@ class _DashboardPageState extends State<DashboardPage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Dashboard',
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.group),
@@ -65,30 +65,31 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildBody() {
-    switch (_selectedIndex) {
-      case 0:
-        return GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2),
-          itemCount: dashboardModelList.length,
-          itemBuilder: (context, index) {
-            final model = dashboardModelList[index];
-            return DashboardItemView(
-              model: model,
-              onPress: (route) {
-                context.goNamed(route);
-              },
-            );
-          },
-        );
-      case 1:
-        return const HerdPage();
-      case 2:
-        return const ViewBovinePage();
-      default:
-        return const Center(child: Text('Erro: Aba inválida'));
-    }
+  switch (_selectedIndex) {
+    case 0:
+      return Consumer<BovineProvider>(
+        builder: (context, provider, child) {
+          final herdCount = provider.herdList.length;
+          final bovineCount = provider.bovineList.length;
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Total de Rebanhos: $herdCount'),
+                Text('Total de Animais: $bovineCount'),
+              ],
+            ),
+          );
+        },
+      );
+    case 1:
+      return const HerdPage();
+    case 2:
+      return const ViewBovinePage();
+    default:
+      return const Center(child: Text('Erro: Aba inválida'));
   }
+}
 
   void _onItemTapped(int index) {
     setState(() {

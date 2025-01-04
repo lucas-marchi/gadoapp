@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gadoapp/pages/add_bovine_page.dart';
 import 'package:gadoapp/pages/herd_page.dart';
 import 'package:gadoapp/pages/view_bovine_page.dart';
 
