@@ -46,7 +46,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
           padding: const EdgeInsets.all(16),
           children: [
             Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.only(bottom: 16),
               child: TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
@@ -55,12 +55,15 @@ class _AddBovinePageState extends State<AddBovinePage> {
                     borderRadius: BorderRadius.circular(5.5),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.shade800),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.primary),
                     borderRadius: BorderRadius.circular(5.5),
                   ),
                   filled: true,
+                  fillColor: Theme.of(context).colorScheme.secondary,
                   labelText: 'Nome ou brinco:',
-                  labelStyle: TextStyle(color: Colors.grey.shade800),
+                  labelStyle:
+                      TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -71,7 +74,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.only(bottom: 16),
               child: TextFormField(
                 controller: _breedController,
                 decoration: InputDecoration(
@@ -80,24 +83,30 @@ class _AddBovinePageState extends State<AddBovinePage> {
                     borderRadius: BorderRadius.circular(5.5),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.shade800),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.primary),
                     borderRadius: BorderRadius.circular(5.5),
                   ),
                   filled: true,
+                  fillColor: Theme.of(context).colorScheme.secondary,
                   labelText: 'Raça:',
-                  labelStyle: TextStyle(color: Colors.grey.shade800),
+                  labelStyle:
+                      TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
               ),
             ),
-            RadioGroup(
-                label: 'Status:',
-                groupValue: bovineStatus,
-                items: BovineUtils.statusList,
-                onItemSelected: (value) {
-                  bovineStatus = value;
-                }),
             Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.only(bottom: 16),
+              child: RadioGroup(
+                  label: 'Status:',
+                  groupValue: bovineStatus,
+                  items: BovineUtils.statusList,
+                  onItemSelected: (value) {
+                    bovineStatus = value;
+                  }),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
               child: TextFormField(
                 keyboardType: TextInputType.number,
                 controller: _weightController,
@@ -107,17 +116,20 @@ class _AddBovinePageState extends State<AddBovinePage> {
                     borderRadius: BorderRadius.circular(5.5),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.shade800),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.primary),
                     borderRadius: BorderRadius.circular(5.5),
                   ),
                   filled: true,
+                  fillColor: Theme.of(context).colorScheme.secondary,
                   labelText: 'Peso:',
-                  labelStyle: TextStyle(color: Colors.grey.shade800),
+                  labelStyle:
+                      TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.only(bottom: 16),
               child: TextField(
                 keyboardType: TextInputType.number,
                 controller: _birthController,
@@ -127,11 +139,14 @@ class _AddBovinePageState extends State<AddBovinePage> {
                     borderRadius: BorderRadius.circular(5.5),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.shade800),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.primary),
                     borderRadius: BorderRadius.circular(5.5),
                   ),
                   filled: true,
-                  labelStyle: TextStyle(color: Colors.grey.shade800),
+                  fillColor: Theme.of(context).colorScheme.secondary,
+                  labelStyle:
+                      TextStyle(color: Theme.of(context).colorScheme.primary),
                   border: InputBorder.none,
                   labelText: 'Data de nascimento:',
                   prefixIcon: const Icon(Icons.calendar_today),
@@ -142,15 +157,18 @@ class _AddBovinePageState extends State<AddBovinePage> {
                 },
               ),
             ),
-            RadioGroup(
-                label: 'Sexo:',
-                groupValue: bovineGender,
-                items: BovineUtils.genderList,
-                onItemSelected: (value) {
-                  bovineGender = value;
-                }),
             Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.only(bottom: 16),
+              child: RadioGroup(
+                  label: 'Sexo:',
+                  groupValue: bovineGender,
+                  items: BovineUtils.genderList,
+                  onItemSelected: (value) {
+                    bovineGender = value;
+                  }),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
               child: TextFormField(
                 controller: _descriptionController,
                 decoration: InputDecoration(
@@ -159,81 +177,113 @@ class _AddBovinePageState extends State<AddBovinePage> {
                     borderRadius: BorderRadius.circular(5.5),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.shade800),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).colorScheme.primary),
                     borderRadius: BorderRadius.circular(5.5),
                   ),
                   filled: true,
+                  fillColor: Theme.of(context).colorScheme.secondary,
                   labelText: 'Observação:',
-                  labelStyle: TextStyle(color: Colors.grey.shade800),
+                  labelStyle:
+                      TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
               ),
             ),
-            Card(
-                child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Consumer<BovineProvider>(
-                      builder: (context, provider, child) =>
-                          DropdownButtonFormField<Herd>(
-                              decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  labelText: 'Rebanho:'),
-                              hint: const Text('Não selecionado'),
-                              isExpanded: true,
-                              value: herd,
-                              items: provider.herdList
-                                  .map((item) => DropdownMenuItem<Herd>(
-                                      value: item, child: Text(item.name)))
-                                  .toList(),
-                              validator: (value) {
-                                if (value == null) {
-                                  return 'Selecione para qual rebanho será adicionado';
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                herd = value;
-                              }),
-                    ))),
-            Card(
-                child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Consumer<BovineProvider>(
-                      builder: (context, provider, child) =>
-                          DropdownButtonFormField<Bovine>(
-                              decoration: const InputDecoration(
-                                  border: InputBorder.none, labelText: 'Pai:'),
-                              hint: const Text('Não selecionado'),
-                              isExpanded: true,
-                              value: dad,
-                              items: provider.bovineList
-                                  //.where((bovine) => bovine.gender == 'Macho')
-                                  .map((item) => DropdownMenuItem<Bovine>(
-                                      value: item, child: Text(item.name!)))
-                                  .toList(),
-                              onChanged: (value) {
-                                dad = value;
-                              }),
-                    ))),
-            Card(
-                child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Consumer<BovineProvider>(
-                      builder: (context, provider, child) =>
-                          DropdownButtonFormField<Bovine>(
-                              decoration: const InputDecoration(
-                                  border: InputBorder.none, labelText: 'Mãe:'),
-                              hint: const Text('Selecionar mãe'),
-                              isExpanded: true,
-                              value: mom,
-                              items: provider.bovineList
-                                  //.where((bovine) => bovine.gender == 'Fêmea')
-                                  .map((item) => DropdownMenuItem<Bovine>(
-                                      value: item, child: Text(item.name!)))
-                                  .toList(),
-                              onChanged: (value) {
-                                mom = value;
-                              }),
-                    ))),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.5),
+                  ),
+                  elevation: 0,
+                  margin: const EdgeInsets.all(0.0),
+                  color: Theme.of(context).colorScheme.secondary,
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Consumer<BovineProvider>(
+                        builder: (context, provider, child) =>
+                            DropdownButtonFormField<Herd>(
+                                decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    labelText: 'Rebanho:'),
+                                hint: const Text('Selecione um rebanho'),
+                                isExpanded: true,
+                                value: herd,
+                                items: provider.herdList
+                                    .map((item) => DropdownMenuItem<Herd>(
+                                        value: item, child: Text(item.name)))
+                                    .toList(),
+                                validator: (value) {
+                                  if (value == null) {
+                                    return 'Selecione para qual rebanho será adicionado';
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  herd = value;
+                                }),
+                      ))),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.5),
+                  ),
+                  elevation: 0,
+                  margin: const EdgeInsets.all(0.0),
+                  color: Theme.of(context).colorScheme.secondary,
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Consumer<BovineProvider>(
+                        builder: (context, provider, child) =>
+                            DropdownButtonFormField<Bovine>(
+                                decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    labelText: 'Pai:'),
+                                hint: const Text('Não informar'),
+                                isExpanded: true,
+                                value: dad,
+                                items: provider.bovineList
+                                    //.where((bovine) => bovine.gender == 'Macho')
+                                    .map((item) => DropdownMenuItem<Bovine>(
+                                        value: item, child: Text(item.name!)))
+                                    .toList(),
+                                onChanged: (value) {
+                                  dad = value;
+                                }),
+                      ))),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.5),
+                  ),
+                  elevation: 0,
+                  margin: const EdgeInsets.all(0.0),
+                  color: Theme.of(context).colorScheme.secondary,
+                  child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Consumer<BovineProvider>(
+                        builder: (context, provider, child) =>
+                            DropdownButtonFormField<Bovine>(
+                                decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                    labelText: 'Mãe:'),
+                                hint: const Text('Não informar'),
+                                isExpanded: true,
+                                value: mom,
+                                items: provider.bovineList
+                                    //.where((bovine) => bovine.gender == 'Fêmea')
+                                    .map((item) => DropdownMenuItem<Bovine>(
+                                        value: item, child: Text(item.name!)))
+                                    .toList(),
+                                onChanged: (value) {
+                                  mom = value;
+                                }),
+                      ))),
+            ),
           ],
         ),
       ),

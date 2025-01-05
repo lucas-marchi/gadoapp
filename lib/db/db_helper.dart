@@ -38,4 +38,8 @@ class DbHelper {
   static Future<void> deleteBovine(String id) async {
     await _db.collection(collectionBovine).doc(id).delete();
   }
+
+  static Future<void> deleteHerd(String id) async {
+    await _db.collection(collectionHerd).doc(id).delete();
+  }
 }

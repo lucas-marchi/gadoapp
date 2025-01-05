@@ -24,9 +24,15 @@ class _RadioGroupState extends State<RadioGroup> {
     super.initState();
   }
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.5),
+      ),
+      elevation: 0,
+      margin: const EdgeInsets.all(0.0),
+      color: Theme.of(context).colorScheme.secondaryContainer,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

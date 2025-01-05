@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gadoapp/auth/auth_service.dart';
-import 'package:gadoapp/customwidgets/dashboard_item_view.dart';
-import 'package:gadoapp/models/dashboard_model.dart';
 import 'package:gadoapp/pages/herd_page.dart';
 import 'package:gadoapp/pages/login_page.dart';
 import 'package:gadoapp/pages/view_bovine_page.dart';
@@ -44,6 +42,7 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       body: _buildBody(),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -65,31 +64,71 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget _buildBody() {
-  switch (_selectedIndex) {
-    case 0:
-      return Consumer<BovineProvider>(
-        builder: (context, provider, child) {
-          final herdCount = provider.herdList.length;
-          final bovineCount = provider.bovineList.length;
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Total de Rebanhos: $herdCount'),
-                Text('Total de Animais: $bovineCount'),
-              ],
-            ),
-          );
-        },
-      );
-    case 1:
-      return const HerdPage();
-    case 2:
-      return const ViewBovinePage();
-    default:
-      return const Center(child: Text('Erro: Aba inválida'));
+    switch (_selectedIndex) {
+      case 0:
+        return Consumer<BovineProvider>(
+          builder: (context, provider, child) {
+            final herdCount = provider.herdList.length;
+            final bovineCount = provider.bovineList.length;
+            final bovinesSold = provider.bovineList
+                .where((bovine) => bovine.status == 'Vendido')
+                .length;
+
+            return Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Card(
+                  elevation: 4,
+                  color: Theme.of(context).colorScheme.secondaryContainer,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildInfoRow('Rebanhos', herdCount),
+                        const SizedBox(height: 16),
+                        _buildInfoRow('Número de cabeças', bovineCount),
+                        const SizedBox(height: 16),
+                        _buildInfoRow('Vendidos', bovinesSold),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      case 1:
+        return const HerdPage();
+      case 2:
+        return const ViewBovinePage();
+      default:
+        return const Center(child: Text('Erro: Aba inválida'));
+    }
   }
-}
+
+  Widget _buildInfoRow(String label, int value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment
+          .spaceBetween,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+              fontSize: 18, fontWeight: FontWeight.w500), // Estilo do rótulo
+        ),
+        Text(
+          value.toString(),
+          style: const TextStyle(
+              fontSize: 20, fontWeight: FontWeight.bold), // Estilo do valor
+        ),
+      ],
+    );
+  }
 
   void _onItemTapped(int index) {
     setState(() {
