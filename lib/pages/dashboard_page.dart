@@ -46,14 +46,14 @@ class _DashboardPageState extends State<DashboardPage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Início',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.group),
+            icon: Icon(Icons.grass),
             label: 'Rebanhos',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.pets),
+            icon: Icon(Icons.search),
             label: 'Animais',
           ),
         ],
@@ -77,7 +77,7 @@ class _DashboardPageState extends State<DashboardPage> {
             return Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Card(
                   elevation: 4,
                   color: Theme.of(context).colorScheme.secondaryContainer,
