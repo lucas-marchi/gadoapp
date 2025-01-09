@@ -12,6 +12,7 @@ import 'package:gadoapp/pages/view_bovine_page.dart';
 import 'package:gadoapp/providers/bovine_provider.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'firebase_options.dart';
 
@@ -20,6 +21,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  persistenceEnabled: true;
+  Settings.CACHE_SIZE_UNLIMITED; 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (context) => BovineProvider()),
   ], child: MyApp()));

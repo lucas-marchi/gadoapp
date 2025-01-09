@@ -14,24 +14,42 @@ class ViewBovinePage extends StatefulWidget {
 }
 
 class _ViewBovinePageState extends State<ViewBovinePage> {
+  final _searchController = TextEditingController();
+  String _searchText = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.goNamed(AddBovinePage.routeName);
+      appBar: AppBar(
+          title: TextField(
+        controller: _searchController,
+        onChanged: (value) {
+          setState(() {
+            _searchText = value;
+          });
         },
-        child: const Icon(Icons.add),
-      ),
-      body: Consumer<BovineProvider>(
-        builder: (context, provider, child) => provider.bovineList.isEmpty
+        decoration: InputDecoration(
+          hintText: 'Pesquisar',
+          border: OutlineInputBorder(
+            borderSide:
+                BorderSide(color: Theme.of(context).colorScheme.primary),
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+        ),
+      )),
+      body: Consumer<BovineProvider>(builder: (context, provider, child) {
+        final filteredBovines = provider.bovineList
+            .where((bovine) =>
+                bovine.name!.toLowerCase().contains(_searchText.toLowerCase()))
+            .toList();
+        return filteredBovines.isEmpty
             ? const Center(
                 child: Text('Nenhum bovino encontrado'),
               )
             : ListView.builder(
-                itemCount: provider.bovineList.length,
+                itemCount: filteredBovines.length,
                 itemBuilder: (context, index) {
-                  final bovine = provider.bovineList[index];
+                  final bovine = filteredBovines[index];
                   return InkWell(
                     onTap: () {
                       context.goNamed(BovineDetailsPage.routeName,
@@ -92,7 +110,6 @@ class _ViewBovinePageState extends State<ViewBovinePage> {
                                   ],
                                 ),
                               ),
-
                               Builder(
                                 builder: (BuildContext context) {
                                   return Icon(
@@ -109,21 +126,25 @@ class _ViewBovinePageState extends State<ViewBovinePage> {
                     ),
                   );
                 },
-              ),
-      ),
+              );
+      }),
     );
   }
 
   Widget _getStatusIcon(String? status) {
     switch (status) {
       case 'Vivo':
-        return const Icon(Icons.favorite_rounded, color: Colors.grey, size: 18.0);
+        return const Icon(Icons.favorite_rounded,
+            color: Colors.grey, size: 18.0);
       case 'Morto':
-        return const Icon(Icons.heart_broken_rounded, color: Colors.grey, size: 18.0);
+        return const Icon(Icons.heart_broken_rounded,
+            color: Colors.grey, size: 18.0);
       case 'Vendido':
-        return const Icon(Icons.attach_money_rounded, color: Colors.grey, size: 18.0);
+        return const Icon(Icons.attach_money_rounded,
+            color: Colors.grey, size: 18.0);
       default:
-        return const Icon(Icons.question_mark_rounded, color: Colors.grey, size: 18.0);
+        return const Icon(Icons.question_mark_rounded,
+            color: Colors.grey, size: 18.0);
     }
   }
 }
