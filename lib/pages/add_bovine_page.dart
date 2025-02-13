@@ -211,7 +211,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
                                 value: herd,
                                 items: provider.herdList
                                     .map((item) => DropdownMenuItem<Herd>(
-                                        value: item, child: Text(item.name)))
+                                        value: item, child: Text(item.name!)))
                                     .toList(),
                                 validator: (value) {
                                   if (value == null) {
@@ -315,6 +315,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
       EasyLoading.show(status: 'Aguarde');
       try {
         final bovine = Bovine(
+          id: 123123,
           name: _nameController.text,
           status: bovineStatus,
           gender: bovineGender,

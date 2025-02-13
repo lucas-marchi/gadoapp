@@ -27,7 +27,7 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
     provider = Provider.of<BovineProvider>(
       context,
     );
-    bovine = provider.findBovineById(widget.id);
+    //bovine = provider.findBovineById(widget.id);
     super.didChangeDependencies();
   }
 
@@ -53,13 +53,13 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
                     context: context,
                     title: 'Editar nome ou brinco',
                     onSubmit: (value) {
-                      EasyLoading.show(status: 'Aguarde...');
-                      provider
-                          .updateBovineFields(bovine.id!, 'name', value)
-                          .then((value) {
-                        EasyLoading.dismiss();
-                        showMsg(context, 'Nome atualizado!');
-                      });
+                      // EasyLoading.show(status: 'Aguarde...');
+                      // provider
+                      //     .updateBovineFields(bovine.id!, 'name', value)
+                      //     .then((value) {
+                      //   EasyLoading.dismiss();
+                      //   showMsg(context, 'Nome atualizado!');
+                      // });
                     });
               },
               icon: const Icon(Icons.edit),
@@ -73,13 +73,13 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
                     context: context,
                     title: 'Editar raça',
                     onSubmit: (value) {
-                      EasyLoading.show(status: 'Aguarde...');
-                      provider
-                          .updateBovineFields(bovine.id!, 'breed', value)
-                          .then((value) {
-                        EasyLoading.dismiss();
-                        showMsg(context, 'Raça atualizado!');
-                      });
+                      // EasyLoading.show(status: 'Aguarde...');
+                      // provider
+                      //     .updateBovineFields(bovine.id!, 'breed', value)
+                      //     .then((value) {
+                      //   EasyLoading.dismiss();
+                      //   showMsg(context, 'Raça atualizado!');
+                      // });
                     });
               },
               icon: const Icon(Icons.edit),
@@ -100,14 +100,14 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
                     context: context,
                     title: 'Editar peso',
                     onSubmit: (value) {
-                      EasyLoading.show(status: 'Aguarde...');
-                      provider
-                          .updateBovineFields(
-                              bovine.id!, 'weight', num.parse(value))
-                          .then((value) {
-                        EasyLoading.dismiss();
-                        showMsg(context, 'Peso atualizado!');
-                      });
+                      // EasyLoading.show(status: 'Aguarde...');
+                      // provider
+                      //     .updateBovineFields(
+                      //         bovine.id!, 'weight', num.parse(value))
+                      //     .then((value) {
+                      //   EasyLoading.dismiss();
+                      //   showMsg(context, 'Peso atualizado!');
+                      // });
                     });
               },
               icon: const Icon(Icons.edit),
@@ -143,13 +143,13 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
                     context: context,
                     title: 'Editar descrição',
                     onSubmit: (value) {
-                      EasyLoading.show(status: 'Aguarde...');
-                      provider
-                          .updateBovineFields(bovine.id!, 'description', value)
-                          .then((value) {
-                        EasyLoading.dismiss();
-                        showMsg(context, 'Descrição atualizado!');
-                      });
+                      // EasyLoading.show(status: 'Aguarde...');
+                      // provider
+                      //     .updateBovineFields(bovine.id!, 'description', value)
+                      //     .then((value) {
+                      //   EasyLoading.dismiss();
+                      //   showMsg(context, 'Descrição atualizado!');
+                      // });
                     });
               },
               icon: const Icon(Icons.edit),
@@ -195,7 +195,7 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
             ),
             TextButton(
               onPressed: () {
-                provider.deleteBovine(bovine.id!).then((value) {
+                provider.deleteBovine(bovine.id! as String).then((value) {
                   EasyLoading.dismiss();
                   showMsg(context, 'Excluído');
                 });
@@ -226,7 +226,7 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
           ),
           TextButton(
             onPressed: () {
-              provider.deleteBovine(bovine.id!);
+              provider.deleteBovine(bovine.id as String);
               Navigator.popUntil(
                   context, ModalRoute.withName(HerdPage.routeName));
             },
@@ -247,14 +247,14 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
     );
 
     if (selectedDate != null) {
-      EasyLoading.show(status: 'Aguarde...');
-      provider
-          .updateBovineFields(
-              bovine.id!, 'birth', selectedDate.toIso8601String())
-          .then((_) {
-        EasyLoading.dismiss();
-        showMsg(context, 'Data de nascimento atualizada!');
-      });
+      // EasyLoading.show(status: 'Aguarde...');
+      // provider
+      //     .updateBovineFields(
+      //         bovine.id!, 'birth', selectedDate.toIso8601String())
+      //     .then((_) {
+      //   EasyLoading.dismiss();
+      //   showMsg(context, 'Data de nascimento atualizada!');
+      // });
     }
   }
 
@@ -289,14 +289,14 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
             ),
             TextButton(
               onPressed: () {
-                EasyLoading.show(status: 'Aguarde...');
-                provider
-                    .updateBovineFields(bovine.id!, 'status', selectedStatus)
-                    .then((_) {
-                  EasyLoading.dismiss();
-                  showMsg(context, 'Status atualizado!');
-                  Navigator.of(context).pop();
-                });
+                // EasyLoading.show(status: 'Aguarde...');
+                // provider
+                //     .updateBovineFields(bovine.id!, 'status', selectedStatus)
+                //     .then((_) {
+                //   EasyLoading.dismiss();
+                //   showMsg(context, 'Status atualizado!');
+                //   Navigator.of(context).pop();
+                // });
               },
               child: const Text('Salvar'),
             ),
@@ -354,13 +354,13 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
               onPressed: () {
                 if (selectedParent != null) {
 
-                  if (parentType == 'Pai') {
-                    provider.updateBovineFields(
-                        bovine.id!, 'dad', selectedParent!.id);
-                  } else {
-                    provider.updateBovineFields(
-                        bovine.id!, 'mom', selectedParent!.id);
-                  }
+                  // if (parentType == 'Pai') {
+                  //   provider.updateBovineFields(
+                  //       bovine.id!, 'dad', selectedParent!.id);
+                  // } else {
+                  //   provider.updateBovineFields(
+                  //       bovine.id!, 'mom', selectedParent!.id);
+                  // }
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(

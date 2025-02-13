@@ -92,7 +92,7 @@ class MyApp extends StatelessWidget {
             GoRoute(
                 name: HerdPage.routeName,
                 path: HerdPage.routeName,
-                builder: (context, state) => const HerdPage()),
+                builder: (context, state) => HerdPage()),
           ],
         ),
         GoRoute(

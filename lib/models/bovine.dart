@@ -1,26 +1,29 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gadoapp/models/herd.dart';
 
-part 'bovine.freezed.dart';
-part 'bovine.g.dart';
+class Bovine {
+  final int id;
+  final String name;
+  final String status;
+  final String gender;
+  final String? breed;
+  final Herd? herd;
+  final num? weight;
+  final DateTime birth;
+  final Bovine? dad;
+  final Bovine? mom;
+  final String? description;
 
-@unfreezed
-class Bovine with _$Bovine {
-  @JsonSerializable(explicitToJson: true)
-  factory Bovine({
-    String? id,
-    String? name,
-    required String status,
-    required String gender,
-    String? breed,
-    Herd? herd,
-    num? weight,
-    required DateTime birth,
-    Bovine? dad,
-    Bovine? mom,
-    String? description,
-  }) = _Bovine;
-
-  factory Bovine.fromJson(Map<String, dynamic> json) => 
-    _$BovineFromJson(json);
+  Bovine({
+    required this.id,
+    required this.name,
+    required this.status,
+    required this.gender,
+    this.breed,
+    this.herd,
+    this.weight,
+    required this.birth,
+    this.dad,
+    this.mom,
+    this.description,
+  });
 }

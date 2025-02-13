@@ -252,7 +252,7 @@ class _ViewBovinePageState extends State<ViewBovinePage> {
     final provider = Provider.of<BovineProvider>(context, listen: false);
     return provider.herdList.map((herd) {
       return DropdownMenuItem(
-        value: herd.id,
+        value: herd.id.toString(),
         child: Text(herd.name),
       );
     }).toList();

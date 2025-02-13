@@ -4,6 +4,7 @@ import 'package:gadoapp/pages/herd_page.dart';
 import 'package:gadoapp/pages/login_page.dart';
 import 'package:gadoapp/pages/view_bovine_page.dart';
 import 'package:gadoapp/providers/bovine_provider.dart';
+import 'package:gadoapp/services/database_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -16,12 +17,15 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  
+  final DatabaseService _databaseService = DatabaseService.instance;
+
   int _selectedIndex = 0;
 
   @override
   void didChangeDependencies() {
-    Provider.of<BovineProvider>(context, listen: false).getAllHerds();
-    Provider.of<BovineProvider>(context, listen: false).getAllBovines();
+    //Provider.of<BovineProvider>(context, listen: false).getAllHerds();
+    //Provider.of<BovineProvider>(context, listen: false).getAllBovines();
     super.didChangeDependencies();
   }
 
@@ -103,7 +107,7 @@ class _DashboardPageState extends State<DashboardPage> {
           },
         );
       case 1:
-        return const HerdPage();
+        return HerdPage();
       case 2:
         return const ViewBovinePage();
       default:
