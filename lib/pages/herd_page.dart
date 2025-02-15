@@ -17,7 +17,7 @@ class HerdPage extends StatefulWidget {
 class _HerdPageState extends State<HerdPage> {
   final DatabaseService _databaseService = DatabaseService.instance;
 
-  String? _herd = null;
+  String? _herd;
 
   @override
   Widget build(BuildContext context) {
@@ -32,86 +32,13 @@ class _HerdPageState extends State<HerdPage> {
               if (_herd == null || _herd == "") return;
               _databaseService.addHerd(_herd!);
               setState(() {});
+              DatabaseService.registerChange();
             },
           );
         },
         child: const Icon(Icons.add),
       ),
       body: _herdsList(),
-      //
-      // Consumer<BovineProvider>(
-      //   builder: (context, provider, child) => provider.herdList.isEmpty
-      //       ? const Center(
-      //           child: Text('Nenhum rebanho encontrado'),
-      //         )
-      //       : ListView.builder(
-      //           itemCount: provider.herdList.length,
-      //           itemBuilder: (context, index) {
-      //             final herd = provider.herdList[index];
-      //             final bovineCount = provider.bovineList
-      //                 .where((bovine) => bovine.herd?.id == herd.id)
-      //                 .length;
-
-      //             return InkWell(
-      //               onTap: () {
-      //                 final filteredBovines = provider.bovineList
-      //                     .where((bovine) => bovine.herd!.id == herd.id)
-      //                     .toList();
-      //                 Navigator.of(context).pushNamed(
-      //                   ViewBovinePage.routeName,
-      //                   arguments: filteredBovines,
-      //                 );
-      //               },
-      //               child: Padding(
-      //                 padding: const EdgeInsets.symmetric(
-      //                     horizontal: 16.0, vertical: 8.0),
-      //                 child: Card(
-      //                   elevation: 4.0,
-      //                   color: Theme.of(context).colorScheme.secondaryContainer,
-      //                   shape: RoundedRectangleBorder(
-      //                     borderRadius: BorderRadius.circular(16.0),
-      //                   ),
-      //                   child: Padding(
-      //                     padding: const EdgeInsets.all(16.0),
-      //                     child: Row(
-      //                       children: [
-      //                         Expanded(
-      //                           child: Column(
-      //                             crossAxisAlignment: CrossAxisAlignment.start,
-      //                             children: [
-      //                               Text(
-      //                                 herd.name,
-      //                                 style: const TextStyle(
-      //                                   fontSize: 18.0,
-      //                                   fontWeight: FontWeight.w500,
-      //                                 ),
-      //                               ),
-      //                               const SizedBox(height: 4.0),
-      //                               Text(
-      //                                 '$bovineCount cabeças',
-      //                                 style: const TextStyle(
-      //                                     fontSize: 16.0, color: Colors.grey),
-      //                               ),
-      //                             ],
-      //                           ),
-      //                         ),
-      //                         Builder(
-      //                           builder: (BuildContext context) {
-      //                             return Icon(
-      //                               Icons.chevron_right,
-      //                               color: Theme.of(context).colorScheme.primary,
-      //                             );
-      //                           },
-      //                         ),
-      //                       ],
-      //                     ),
-      //                   ),
-      //                 ),
-      //               ),
-      //             );
-      //           },
-      //         ),
-      // ),
     );
   }
 
@@ -131,18 +58,19 @@ class _HerdPageState extends State<HerdPage> {
           itemCount: snapshot.data!.length,
           itemBuilder: (context, index) {
             final herd = snapshot.data![index];
-            final bovineCount = 0; // Você precisará implementar a contagem
+            const bovineCount = 0;
 
             return InkWell(
               onTap: () {
                 Navigator.of(context).pushNamed(
                   ViewBovinePage.routeName,
-                  arguments: herd.id, // Passe o ID do rebanho
+                  arguments: herd.id,
                 );
               },
               onLongPress: () {
                 _databaseService.deleteHerd(herd.id);
                 setState(() {});
+                DatabaseService.registerChange();
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -171,9 +99,9 @@ class _HerdPageState extends State<HerdPage> {
                                 ),
                               ),
                               const SizedBox(height: 4.0),
-                              Text(
+                              const Text(
                                 '$bovineCount cabeças',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 16.0,
                                   color: Colors.grey,
                                 ),

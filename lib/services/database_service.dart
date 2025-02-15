@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:gadoapp/models/bovine.dart';
 import 'package:gadoapp/models/herd.dart';
+import 'package:gadoapp/services/api_service.dart';
+import 'package:gadoapp/services/connectivity_service.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -7,6 +10,8 @@ import 'package:sqflite/sqlite_api.dart';
 class DatabaseService {
   static Database? _db;
   static final DatabaseService instance = DatabaseService._contrutctor();
+  static final ValueNotifier<bool> hasLocalChanges = ValueNotifier(false);
+  static bool _isAutoSyncing = false;
 
   final String _herdsTableName = 'herds';
   final String _herdsIdColumnName = 'id';
@@ -27,39 +32,66 @@ class DatabaseService {
 
   DatabaseService._contrutctor();
 
+  static void registerChange() {
+    hasLocalChanges.value = true;
+    _tryAutoSync();
+  }
+
   Future<Database> get database async {
     if (_db != null) return _db!;
     _db = await getDatabase();
     return _db!;
   }
 
+  static Future<void> _tryAutoSync() async {
+  if (!_isAutoSyncing && hasLocalChanges.value) {
+    _isAutoSyncing = true;
+    final hasConnection = await ConnectivityService.connectionChecker.hasConnection;
+    if (hasConnection) {
+      try {
+        final apiService = ApiService();
+        final herds = await instance.getHerds();
+        final bovines = await instance.getBovines();
+        final success = await apiService.syncData(herds, bovines);
+        if (success) {
+          hasLocalChanges.value = false;
+          await apiService.updateLastSync(DateTime.now());
+        }
+      } catch (e) {
+        print('Erro na sincronização automática: $e');
+      }
+    }
+    _isAutoSyncing = false;
+  }
+}
+
   Future<Database> getDatabase() async {
     final databaseDirPath = await getDatabasesPath();
     final databasePath = join(databaseDirPath, 'master_db.db');
 
     return await openDatabase(
-    databasePath,
-    version: 4, // Mantenha a versão atual
-    onCreate: (db, version) async {
-      await _createTables(db);
-    },
-    onUpgrade: (db, oldVersion, newVersion) async {
-      if (oldVersion < 4) {
+      databasePath,
+      version: 4, // Mantenha a versão atual
+      onCreate: (db, version) async {
         await _createTables(db);
-      }
-    },
-  );
-}
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 4) {
+          await _createTables(db);
+        }
+      },
+    );
+  }
 
-Future<void> _createTables(Database db) async {
-  await db.execute('''
+  Future<void> _createTables(Database db) async {
+    await db.execute('''
     CREATE TABLE IF NOT EXISTS $_herdsTableName (
       $_herdsIdColumnName INTEGER PRIMARY KEY,
       $_herdsNameColumnName TEXT NOT NULL
     )
   ''');
 
-  await db.execute('''
+    await db.execute('''
     CREATE TABLE IF NOT EXISTS $_bovinesTableName(
       $_bovineIdColumnName INTEGER PRIMARY KEY,
       $_bovineNameColumnName TEXT,
@@ -80,7 +112,7 @@ Future<void> _createTables(Database db) async {
         REFERENCES $_bovinesTableName($_bovineIdColumnName)
     )
   ''');
-}
+  }
 
   void addHerd(
     String name,
@@ -99,12 +131,9 @@ Future<void> _createTables(Database db) async {
     final db = await database;
     final data = await db.query(_herdsTableName);
     List<Herd> herds = data
-        .map((e) => Herd(
-          id: e["id"] as int, 
-          name: e["name"] as String
-        ))
+        .map((e) => Herd(id: e["id"] as int, name: e["name"] as String))
         .toList();
-      return herds;
+    return herds;
   }
 
   void deleteHerd(int id) async {
@@ -117,65 +146,44 @@ Future<void> _createTables(Database db) async {
   }
 
   Future<int> addBovine(
-  String name,
-  String status,
-  String gender,
-  String? breed, 
-  double? weight,
-  String birth,
-  int herdId,
-  int? momId,
-  int? dadId,
-  String? description,
-) async {
-  final db = await database;
-  return await db.insert(
-    _bovinesTableName,
-    {
-      _bovineNameColumnName: name,
-      _statusColumnName: status,
-      _genderColumnName: gender,
-      _breedColumnName: breed,
-      _weightColumnName: weight,
-      _birthColumnName: birth,
-      _herdIdFKColumnName: herdId,
-      _momIdColumnName: momId,
-      _dadIdColumnName: dadId,
-      _descriptionColumnName: description,
-    },
-    conflictAlgorithm: ConflictAlgorithm.replace,
-  );
-}
+    String name,
+    String status,
+    String gender,
+    String? breed,
+    double? weight,
+    String birth,
+    int herdId,
+    int? momId,
+    int? dadId,
+    String? description,
+  ) async {
+    final db = await database;
+    return await db.insert(
+      _bovinesTableName,
+      {
+        _bovineNameColumnName: name,
+        _statusColumnName: status,
+        _genderColumnName: gender,
+        _breedColumnName: breed,
+        _weightColumnName: weight,
+        _birthColumnName: birth,
+        _herdIdFKColumnName: herdId,
+        _momIdColumnName: momId,
+        _dadIdColumnName: dadId,
+        _descriptionColumnName: description,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
 
   Future<List<Bovine>> getBovines() async {
-  try {
-    return (await database)
-        .query(_bovinesTableName)
-        .then((maps) => maps.map(Bovine.fromJson).toList());
-  } on DatabaseException catch (e) {
-    print('Erro ao buscar bovinos: $e');
-    return [];
+    try {
+      return (await database)
+          .query(_bovinesTableName)
+          .then((maps) => maps.map(Bovine.fromJson).toList());
+    } on DatabaseException catch (e) {
+      print('Erro ao buscar bovinos: $e');
+      return [];
+    }
   }
-}
-
-  Future<Bovine> getBovine(int id) async {
-  final db = await database;
-  final maps = await db.query(
-    _bovinesTableName,
-    where: '$_bovineIdColumnName = ?',
-    whereArgs: [id],
-  );
-  if (maps.isEmpty) throw Exception('Bovino não encontrado');
-  return Bovine.fromJson(maps.first);
-}
-/*
-Future<int> updateBovine(Bovine bovine) async {
-  final db = await database;
-  return db.update(
-    _bovinesTableName,
-    _bovineToMap(bovine),
-    where: '$_bovineIdColumnName = ?',
-    whereArgs: [bovine.id],
-  );
-}*/
 }

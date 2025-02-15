@@ -32,6 +32,7 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     super.initState();
     _initializeData();
+    DatabaseService.hasLocalChanges.addListener(_handleSyncStatus);
   }
 
   void _initializeData() {
@@ -48,6 +49,16 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 
+  @override
+  void dispose() {
+    DatabaseService.hasLocalChanges.removeListener(_handleSyncStatus);
+    super.dispose();
+  }
+
+  void _handleSyncStatus() {
+    setState(() {});
+  }
+
   void _refreshData() {
     setState(() {
       _herdsFuture = _databaseService.getHerds().catchError((error) {
@@ -58,7 +69,7 @@ class _DashboardPageState extends State<DashboardPage> {
       _bovinesFuture = _databaseService.getBovines().catchError((error) {
         print('Erro ao carregar bovinos: $error');
         return <Bovine>[];
-      });
+      }) as Future<List<Bovine>>;
     });
   }
 
@@ -69,20 +80,16 @@ class _DashboardPageState extends State<DashboardPage> {
         title: const Text('GadoApp'),
         actions: [
           ValueListenableBuilder<bool>(
-            valueListenable: _syncStatus,
-            builder: (context, isSynced, _) {
+            valueListenable: DatabaseService.hasLocalChanges,
+            builder: (context, hasChanges, _) {
               return IconButton(
                 icon: Icon(
-                  isSynced ? Icons.cloud_done : Icons.cloud_off,
-                  color: isSynced ? Colors.green : Colors.red,
+                  !hasChanges ? Icons.cloud_done : Icons.cloud_off,
+                  color: !hasChanges ? Colors.green : Colors.red,
                 ),
-                onPressed: () {
-                  if (!isSynced) {
-                    _performSync();
-                  } else {
-                    EasyLoading.showInfo('Já está sincronizado!');
-                  }
-                },
+                onPressed: () => !hasChanges
+                    ? EasyLoading.showInfo('Já sincronizado!')
+                    : _performSync(),
               );
             },
           ),
@@ -170,7 +177,6 @@ class _DashboardPageState extends State<DashboardPage> {
                     borderRadius: BorderRadius.circular(16.0),
                   ),
                   child: Padding(
-                    // Agora é o child do Card
                     padding: const EdgeInsets.all(24.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -227,24 +233,20 @@ class _DashboardPageState extends State<DashboardPage> {
   Future<void> _performSync() async {
     EasyLoading.show(status: 'Sincronizando...');
     try {
-      final herds = await _databaseService.getHerds();
-      final bovines = await _databaseService.getBovines();
-
-      print("Aquiiii: $herds, $bovines");
-
-      final success = await _apiService.syncData(herds, bovines);
+      final success = await _apiService.syncData(
+        await _databaseService.getHerds(),
+        (await _databaseService.getBovines()).cast<Bovine>(),
+      );
 
       if (success) {
+        DatabaseService.hasLocalChanges.value = false;
+        _lastSync = DateTime.now();
+        await _apiService.updateLastSync(_lastSync!);
         EasyLoading.showSuccess('Dados sincronizados!');
-        _syncStatus.value = true;
-        _loadSyncStatus();
-      } else {
-        EasyLoading.showError('Falha na sincronização');
       }
-    } catch (e) {
-      EasyLoading.showError('Erro: ${e.toString()}');
     } finally {
       EasyLoading.dismiss();
+      _refreshData();
     }
   }
 }

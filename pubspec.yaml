@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.8
+  cupertino_icons:
   firebase_core: 
   firebase_auth:
   cloud_firestore: 
@@ -40,8 +40,9 @@ dependencies:
   provider:
   intl:
   flutter_easyloading: 
-  go_router: ^14.6.3
+  go_router:
   connectivity_plus: 
+  internet_connection_checker:
   freezed_annotation: 
   json_annotation:
 

@@ -6,8 +6,6 @@ import 'package:gadoapp/models/herd.dart';
 import 'package:gadoapp/services/database_service.dart';
 import 'package:gadoapp/utils/constants.dart';
 import 'package:gadoapp/utils/widget_functions.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class AddBovinePage extends StatefulWidget {
@@ -282,7 +280,6 @@ class _AddBovinePageState extends State<AddBovinePage> {
                         value: dad,
                         items: males
                             .map((item) => DropdownMenuItem<Bovine>(
-                                  // Removido const
                                   value: item,
                                   child: Text(item.name),
                                 ))
@@ -365,19 +362,13 @@ class _AddBovinePageState extends State<AddBovinePage> {
       try {
         EasyLoading.show(status: 'Salvando...');
 
-        // Converter dados
         final birthDate = _birthController.text.isNotEmpty
             ? DateTime.parse(_birthController.text)
             : DateTime.now();
 
-        // Obter IDs
         final herdId = herd?.id ?? 0;
         final momId = mom?.id;
         final dadId = dad?.id;
-
-        if (herdId <= 0) {
-          throw Exception('Selecione um rebanho válido');
-        }
 
         final weight = _weightController.text.isNotEmpty
             ? double.parse(_weightController.text)
@@ -389,7 +380,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
           bovineGender,
           _breedController.text,
           weight,
-          birthDate.toIso8601String(), // Converter para string ISO
+          birthDate.toIso8601String(),
           herdId,
           momId!,
           dadId!,

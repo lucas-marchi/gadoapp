@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ApiService {
   static const String _baseUrl = 'http://192.168.30.229:8080/api';
   static const String _syncKey = 'lastSync';
+  static const String _lastSyncKey = 'lastSync';
 
   Future<bool> syncData(List<Herd> herds, List<Bovine> bovines) async {
     try {
@@ -46,35 +47,14 @@ class ApiService {
     }
   }
 
-  // Future<bool> syncData(List<Herd> herds, List<Bovine> bovines) async {
-  //   try {
-  //     // Sincronizar rebanhos primeiro
-  //     final herdsSuccess = await _sendData('sync/herds',
-  //       herds.map((h) => h.toJson()).toList()
-  //     );
-
-  //     if (!herdsSuccess) return false;
-
-  //     // Sincronizar bovinos
-  //     final bovinesSuccess = await _sendData('sync/bovines',
-  //       bovines.map((b) => b.toJson()).toList()
-  //     );
-
-  //     if (bovinesSuccess) {
-  //       final prefs = await SharedPreferences.getInstance();
-  //       await prefs.setString(_syncKey, DateTime.now().toIso8601String());
-  //     }
-
-  //     return bovinesSuccess;
-  //   } catch (e) {
-  //     print('Erro geral na sincronização: $e');
-  //     return false;
-  //   }
-  // }
+  Future<void> updateLastSync(DateTime date) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_syncKey, date.toIso8601String());
+  }
 
   Future<DateTime?> getLastSync() async {
     final prefs = await SharedPreferences.getInstance();
-    final dateString = prefs.getString(_syncKey);
+    final dateString = prefs.getString(_lastSyncKey);
     return dateString != null ? DateTime.parse(dateString) : null;
   }
 }
