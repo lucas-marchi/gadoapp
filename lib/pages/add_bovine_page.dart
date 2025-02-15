@@ -3,11 +3,12 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gadoapp/customwidgets/radio_group.dart';
 import 'package:gadoapp/models/bovine.dart';
 import 'package:gadoapp/models/herd.dart';
-import 'package:gadoapp/providers/bovine_provider.dart';
+import 'package:gadoapp/services/database_service.dart';
 import 'package:gadoapp/utils/constants.dart';
 import 'package:gadoapp/utils/widget_functions.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:sqflite/sqflite.dart';
 
 class AddBovinePage extends StatefulWidget {
   static const String routeName = 'addbovine';
@@ -23,6 +24,7 @@ class _AddBovinePageState extends State<AddBovinePage> {
   final _weightController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _birthController = TextEditingController();
+  final DatabaseService _databaseService = DatabaseService.instance;
 
   Bovine? mom;
   Bovine? dad;
@@ -192,97 +194,155 @@ class _AddBovinePageState extends State<AddBovinePage> {
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.5),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.5),
+                ),
+                elevation: 0,
+                margin: const EdgeInsets.all(0.0),
+                color: Theme.of(context).colorScheme.secondary,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FutureBuilder<List<Herd>>(
+                    future: _databaseService.getHerds(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return DropdownButtonFormField<Herd>(
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            labelText: 'Carregando rebanhos...',
+                          ),
+                          items: const [],
+                          onChanged: (_) {},
+                        );
+                      }
+                      return DropdownButtonFormField<Herd>(
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          labelText: 'Rebanho:',
+                        ),
+                        hint: const Text('Selecione um rebanho'),
+                        isExpanded: true,
+                        value: herd,
+                        items: snapshot.data!
+                            .map((item) => DropdownMenuItem<Herd>(
+                                  // Removido const
+                                  value: item,
+                                  child: Text(item.name),
+                                ))
+                            .toList(),
+                        validator: (value) {
+                          if (value == null) {
+                            return 'Selecione para qual rebanho será adicionado';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() => herd = value);
+                        },
+                      );
+                    },
                   ),
-                  elevation: 0,
-                  margin: const EdgeInsets.all(0.0),
-                  color: Theme.of(context).colorScheme.secondary,
-                  child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Consumer<BovineProvider>(
-                        builder: (context, provider, child) =>
-                            DropdownButtonFormField<Herd>(
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    labelText: 'Rebanho:'),
-                                hint: const Text('Selecione um rebanho'),
-                                isExpanded: true,
-                                value: herd,
-                                items: provider.herdList
-                                    .map((item) => DropdownMenuItem<Herd>(
-                                        value: item, child: Text(item.name!)))
-                                    .toList(),
-                                validator: (value) {
-                                  if (value == null) {
-                                    return 'Selecione para qual rebanho será adicionado';
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {
-                                  herd = value;
-                                }),
-                      ))),
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.5),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.5),
+                ),
+                elevation: 0,
+                margin: const EdgeInsets.all(0.0),
+                color: Theme.of(context).colorScheme.secondary,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FutureBuilder<List<Bovine>>(
+                    future: _databaseService.getBovines(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return DropdownButtonFormField<Bovine>(
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            labelText: 'Carregando bovinos...',
+                          ),
+                          items: const [],
+                          onChanged: (_) {},
+                        );
+                      }
+                      final males = snapshot.data!
+                          .where((b) => b.gender == 'Macho')
+                          .toList();
+                      return DropdownButtonFormField<Bovine>(
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          labelText: 'Pai:',
+                        ),
+                        hint: const Text('Não informar'),
+                        isExpanded: true,
+                        value: dad,
+                        items: males
+                            .map((item) => DropdownMenuItem<Bovine>(
+                                  // Removido const
+                                  value: item,
+                                  child: Text(item.name),
+                                ))
+                            .toList(),
+                        onChanged: (value) {
+                          // Garantir onChanged
+                          setState(() => dad = value);
+                        },
+                      );
+                    },
                   ),
-                  elevation: 0,
-                  margin: const EdgeInsets.all(0.0),
-                  color: Theme.of(context).colorScheme.secondary,
-                  child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Consumer<BovineProvider>(
-                        builder: (context, provider, child) =>
-                            DropdownButtonFormField<Bovine>(
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    labelText: 'Pai:'),
-                                hint: const Text('Não informar'),
-                                isExpanded: true,
-                                value: dad,
-                                items: provider.bovineList
-                                    //.where((bovine) => bovine.gender == 'Macho')
-                                    .map((item) => DropdownMenuItem<Bovine>(
-                                        value: item, child: Text(item.name!)))
-                                    .toList(),
-                                onChanged: (value) {
-                                  dad = value;
-                                }),
-                      ))),
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.5),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.5),
+                ),
+                elevation: 0,
+                margin: const EdgeInsets.all(0.0),
+                color: Theme.of(context).colorScheme.secondary,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FutureBuilder<List<Bovine>>(
+                    future: _databaseService.getBovines(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return DropdownButtonFormField(
+                          decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              labelText: 'Carregando bovinos...'),
+                          items: const [],
+                          onChanged: (_) {},
+                        );
+                      }
+                      final females = snapshot.data!
+                          .where((b) => b.gender == 'Fêmea')
+                          .toList();
+                      return DropdownButtonFormField<Bovine>(
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, labelText: 'Mãe:'),
+                        hint: const Text('Não informar'),
+                        isExpanded: true,
+                        value: mom,
+                        items: females
+                            .map((item) => DropdownMenuItem<Bovine>(
+                                  value: item,
+                                  child: Text(item.name),
+                                ))
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() => mom = value);
+                        },
+                      );
+                    },
                   ),
-                  elevation: 0,
-                  margin: const EdgeInsets.all(0.0),
-                  color: Theme.of(context).colorScheme.secondary,
-                  child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Consumer<BovineProvider>(
-                        builder: (context, provider, child) =>
-                            DropdownButtonFormField<Bovine>(
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    labelText: 'Mãe:'),
-                                hint: const Text('Não informar'),
-                                isExpanded: true,
-                                value: mom,
-                                items: provider.bovineList
-                                    //.where((bovine) => bovine.gender == 'Fêmea')
-                                    .map((item) => DropdownMenuItem<Bovine>(
-                                        value: item, child: Text(item.name!)))
-                                    .toList(),
-                                onChanged: (value) {
-                                  mom = value;
-                                }),
-                      ))),
+                ),
+              ),
             ),
           ],
         ),
@@ -301,40 +361,53 @@ class _AddBovinePageState extends State<AddBovinePage> {
   }
 
   void _saveBovine() async {
-    String birthString = _birthController.text.trim();
-    DateTime birthDate;
-    try {
-      DateFormat format = DateFormat("yyyy-MM-dd");
-      birthDate = format.parse(birthString);
-    } catch (e) {
-      print("Erro ao converter a data: $e");
-      return;
-    }
-
     if (_formKey.currentState!.validate()) {
-      EasyLoading.show(status: 'Aguarde');
       try {
-        final bovine = Bovine(
-          id: 123123,
-          name: _nameController.text,
-          status: bovineStatus,
-          gender: bovineGender,
-          breed: _breedController.text,
-          herd: herd!,
-          weight: num.parse(_weightController.text),
-          birth: birthDate,
-          dad: dad,
-          mom: mom,
-          description: _descriptionController.text,
+        EasyLoading.show(status: 'Salvando...');
+
+        // Converter dados
+        final birthDate = _birthController.text.isNotEmpty
+            ? DateTime.parse(_birthController.text)
+            : DateTime.now();
+
+        // Obter IDs
+        final herdId = herd?.id ?? 0;
+        final momId = mom?.id;
+        final dadId = dad?.id;
+
+        if (herdId <= 0) {
+          throw Exception('Selecione um rebanho válido');
+        }
+
+        final weight = _weightController.text.isNotEmpty
+            ? double.parse(_weightController.text)
+            : 0.0;
+
+        _databaseService.addBovine(
+          _nameController.text,
+          bovineStatus,
+          bovineGender,
+          _breedController.text,
+          weight,
+          birthDate.toIso8601String(), // Converter para string ISO
+          herdId,
+          momId!,
+          dadId!,
+          _descriptionController.text,
         );
-        await Provider.of<BovineProvider>(context, listen: false)
-            .addBovine(bovine);
+
         EasyLoading.dismiss();
-        showMsg(context, 'Salvo');
+        showMsg(context, 'Bovino cadastrado com sucesso!');
         _resetFields();
-      } catch (error) {
+      } on FormatException catch (e) {
         EasyLoading.dismiss();
-        print(error.toString());
+        showMsg(context, 'Erro de formato: ${e.message}');
+      } on DatabaseException catch (e) {
+        EasyLoading.dismiss();
+        showMsg(context, 'Erro no banco: $e');
+      } catch (e) {
+        EasyLoading.dismiss();
+        showMsg(context, 'Erro inesperado: $e');
       }
     }
   }

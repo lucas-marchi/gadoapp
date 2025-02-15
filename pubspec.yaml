@@ -45,6 +45,9 @@ dependencies:
   freezed_annotation: 
   json_annotation:
 
+  http:
+  shared_preferences:
+
   flutter_localizations:
     sdk: flutter 
   sqflite: ^2.4.1
