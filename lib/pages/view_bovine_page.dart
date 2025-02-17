@@ -18,7 +18,7 @@ class _ViewBovinePageState extends State<ViewBovinePage> {
   final _searchController = TextEditingController();
   final DatabaseService _databaseService = DatabaseService.instance;
   String _searchText = '';
-  String? _selectedHerdId;
+  int? _selectedHerdId;
   String? _selectedGender;
   String? _selectedStatus;
   List<Bovine> _bovines = [];
@@ -161,14 +161,14 @@ class _ViewBovinePageState extends State<ViewBovinePage> {
           children: [
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(labelText: 'Rebanho'),
-              value: _selectedHerdId,
+              value: _selectedHerdId.toString(),
               items: _herds
                   .map((herd) => DropdownMenuItem(
                         value: herd.id.toString(),
                         child: Text(herd.name),
                       ))
                   .toList(),
-              onChanged: (value) => setState(() => _selectedHerdId = value),
+              onChanged: (value) => setState(() => _selectedHerdId = value as int?),
             ),
             DropdownButtonFormField<String>(
               decoration: const InputDecoration(labelText: 'Sexo'),
@@ -215,7 +215,7 @@ class _ViewBovinePageState extends State<ViewBovinePage> {
     return bovines.where((bovine) {
       final nameMatch = bovine.name.toLowerCase().contains(_searchText.toLowerCase());
       final herdMatch = _selectedHerdId == null || 
-          bovine.herd == _selectedHerdId;
+          bovine.herdId == _selectedHerdId;
       final genderMatch = _selectedGender == null || 
           bovine.gender == _selectedGender;
       final statusMatch = _selectedStatus == null || 

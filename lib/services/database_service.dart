@@ -44,26 +44,27 @@ class DatabaseService {
   }
 
   static Future<void> _tryAutoSync() async {
-  if (!_isAutoSyncing && hasLocalChanges.value) {
-    _isAutoSyncing = true;
-    final hasConnection = await ConnectivityService.connectionChecker.hasConnection;
-    if (hasConnection) {
-      try {
-        final apiService = ApiService();
-        final herds = await instance.getHerds();
-        final bovines = await instance.getBovines();
-        final success = await apiService.syncData(herds, bovines);
-        if (success) {
-          hasLocalChanges.value = false;
-          await apiService.updateLastSync(DateTime.now());
+    if (!_isAutoSyncing && hasLocalChanges.value) {
+      _isAutoSyncing = true;
+      final hasConnection =
+          await ConnectivityService.connectionChecker.hasConnection;
+      if (hasConnection) {
+        try {
+          final apiService = ApiService();
+          final herds = await instance.getHerds();
+          final bovines = await instance.getBovines();
+          final success = await apiService.syncData(herds, bovines);
+          if (success) {
+            hasLocalChanges.value = false;
+            await apiService.updateLastSync(DateTime.now());
+          }
+        } catch (e) {
+          print('Erro na sincronização automática: $e');
         }
-      } catch (e) {
-        print('Erro na sincronização automática: $e');
       }
+      _isAutoSyncing = false;
     }
-    _isAutoSyncing = false;
   }
-}
 
   Future<Database> getDatabase() async {
     final databaseDirPath = await getDatabasesPath();
@@ -71,9 +72,10 @@ class DatabaseService {
 
     return await openDatabase(
       databasePath,
-      version: 4, // Mantenha a versão atual
+      version: 4,
       onCreate: (db, version) async {
         await _createTables(db);
+        await _checkServerData(db);
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 4) {
@@ -81,6 +83,45 @@ class DatabaseService {
         }
       },
     );
+  }
+
+  Future<void> _checkServerData(Database db) async {
+    try {
+      final localHerds = await getHerds();
+      if (localHerds.isEmpty) {
+        final apiService = ApiService();
+        final remoteHerds = await apiService.getHerds();
+        final remoteBovines = await apiService.getBovines();
+
+        await _syncLocalData(db, remoteHerds, remoteBovines);
+      }
+    } catch (e) {
+      print('Erro ao verificar dados do servidor: $e');
+    }
+  }
+
+  Future<void> _syncLocalData(
+    Database db,
+    List<Herd> remoteHerds,
+    List<Bovine> remoteBovines,
+  ) async {
+    await db.transaction((txn) async {
+      for (final herd in remoteHerds) {
+        await txn.insert(
+          _herdsTableName,
+          herd.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
+
+      for (final bovine in remoteBovines) {
+        await txn.insert(
+          _bovinesTableName,
+          bovine.toJson(),
+          conflictAlgorithm: ConflictAlgorithm.replace,
+        );
+      }
+    });
   }
 
   Future<void> _createTables(Database db) async {

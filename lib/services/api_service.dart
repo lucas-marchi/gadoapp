@@ -47,6 +47,20 @@ class ApiService {
     }
   }
 
+  Future<List<Herd>> getHerds() async {
+    final response = await http.get(Uri.parse('$_baseUrl/herds'));
+    return (jsonDecode(response.body) as List)
+        .map((e) => Herd.fromJson(e))
+        .toList();
+  }
+
+  Future<List<Bovine>> getBovines() async {
+    final response = await http.get(Uri.parse('$_baseUrl/bovines'));
+    return (jsonDecode(response.body) as List)
+        .map((e) => Bovine.fromJson(e))
+        .toList();
+  }
+
   Future<void> updateLastSync(DateTime date) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_syncKey, date.toIso8601String());

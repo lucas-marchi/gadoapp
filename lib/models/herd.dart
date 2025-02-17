@@ -14,5 +14,10 @@ class Herd {
     };
   }
 
-  static fromJson(json) {}
+  factory Herd.fromJson(Map<String, dynamic> json) {
+    return Herd(
+      id: json['id'] as int,
+      name: json['name'] as String,
+    );
+  }
 }

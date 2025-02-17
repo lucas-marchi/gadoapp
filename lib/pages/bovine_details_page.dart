@@ -145,7 +145,7 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
             ),
           ),
           ListTile(
-            title: Text('Pai: ${bovine.dad?.name ?? 'Não selecionado'}'),
+            title: Text('Pai: ${bovine.dadId ?? 'Não selecionado'}'),
             trailing: IconButton(
               onPressed: () {
 
@@ -155,7 +155,7 @@ class _BovineDetailsPageState extends State<BovineDetailsPage> {
           ),
 
           ListTile(
-            title: Text('Mãe: ${bovine.mom?.name ?? 'Não selecionado'}'),
+            title: Text('Mãe: ${bovine.momId ?? 'Não selecionado'}'),
             trailing: IconButton(
               onPressed: () {
 

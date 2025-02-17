@@ -8,9 +8,9 @@ class Bovine {
   String? breed;
   double? weight;
   DateTime birth;
-  Herd herd;
-  Bovine? mom;
-  Bovine? dad;
+  final int herdId;
+  final int? momId;
+  final int? dadId;
   String? description;
 
   Bovine({
@@ -21,9 +21,9 @@ class Bovine {
     this.breed,
     this.weight,
     required this.birth,
-    required this.herd,
-    this.mom,
-    this.dad,
+    required this.herdId,
+    this.momId,
+    this.dadId,
     this.description,
   });
 
@@ -37,25 +37,25 @@ class Bovine {
       'weight': weight,
       'birth': birth.toIso8601String(),
       'description': description,
-      'herd_id': herd.id,
-      'mom_id': mom?.id,
-      'dad_id': dad?.id,
+      'herd_id': herdId,
+      'mom_id': momId,
+      'dad_id': dadId,
     };
   }
 
   factory Bovine.fromJson(Map<String, dynamic> json) {
     return Bovine(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      status: json['status'] as String,
-      gender: json['gender'] as String,
-      breed: json['breed'] as String?,
-      weight: json['weight'] as double?,
-      birth: DateTime.parse(json['birth'] as String),
-      herd: json['herd_id'] != null ? Herd.fromJson(json['herd']) : null,
-      mom: json['mom_id'] != null ? Bovine.fromJson(json['mom']) : null,
-      dad: json['dad_id'] != null ? Bovine.fromJson(json['dad']) : null,
-      description: json['description'] as String?,
+      id: json['id'],
+      name: json['name'],
+      status: json['status'],
+      gender: json['gender'],
+      breed: json['breed'],
+      weight: json['weight']?.toDouble(),
+      birth: DateTime.parse(json['birth']),
+      description: json['description'],
+      herdId: json['herdId'],
+      momId: json['momId'],
+      dadId: json['dadId'],
     );
   }
 }

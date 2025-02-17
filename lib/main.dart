@@ -19,7 +19,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   
-  await DatabaseService.instance.database;
+  final dbService = DatabaseService.instance;
+  await dbService.database;
 
   runApp(MyApp());
 }
